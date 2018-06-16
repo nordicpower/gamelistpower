@@ -12,20 +12,21 @@ La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **co
 Ces dossiers de jeux multi-plateformes sont alimentés par une recherche de vos roms à travers les fichiers **gamelist.xml** et d'alimenter cette nouvelle plateforme collections.
 
 ##  Comment installer ?
-
+Procédure testé sous Windows10
  1. A partir de l'adresse du site https://github.com/nordicpower/gamelistpower, choisir download puis Download ZIP
  2. Ouvrir le partage \\recalbox\share
  3. Créer un dossier \\recalbox\share\nordicpower
- 4. Créer un dossier \\recalbox\share\nordicpower\gamelistpower
- 5. Dézipper le fichier gamelistpower-master.zip \\recalbox\share\nordicpower\gamelistpower
- 6. Ouvrir une session ssh<br />
+ 4. Copier le fichier gamelistpower-master.zip \\recalbox\share\nordicpower
+ 5. Bouton droit sur le fichier gamelistpower-master.zip, Menu extraire tout et Bouton OK
+ 6. 
+ 7. Ouvrir une session ssh<br />
 `mount -o remount,rw /`<br />
-`cd /recalbox/share/nordicpower`<br />
-`cp -r gamelistpower /recalbox/scripts`<br />
+`cd /recalbox/share/nordicpower/gamelistpower-master`<br />
+`cp -r gamelistpower-master /recalbox/scripts/gamelistpower`<br />
 `cd /recalbox/scripts/gamelistpower`<br />
 `chmod 777 *.sh`<br />
 `./install.sh`<br />
- 7. Une recherche sera lancée, la nouvelle plateforme sera prise en compte après un reboot de recalbox
+ 8. Une recherche sera lancée, la nouvelle plateforme sera prise en compte après un reboot de recalbox
 
 ## Comment configurer ?
 
