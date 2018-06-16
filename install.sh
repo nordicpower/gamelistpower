@@ -19,6 +19,12 @@ mount -o remount,rw /
 echo "Deploiement de la plateforme Collections"
 
 ################################################################################
+#PARAMETRAGE FICHIERS RECALBOX
+cp gamelistpower.ini.RECALBOX gamelistpower.ini
+cp rules_gensh.xml.RECALBOX rules_gensh.xml
+cp rules_romcpy.xml.RECALBOX rules_romcpy.xml
+
+################################################################################
 #PREPARATION DU DOSSIER
 echo "Gestion des dossiers"
 
