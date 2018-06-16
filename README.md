@@ -11,6 +11,15 @@ La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **co
 
 Ces dossiers de jeux multi-plateformes sont alimentés par une recherche de vos roms à travers les fichiers **gamelist.xml** et d'alimenter cette nouvelle plateforme collections.
 
+##  Copies d'écran du résultat
+Le dossier Outrun
+![Alt text](/screenshots/Outrun-folder.png?raw=true "Outrun-folder")
+![Alt text](/screenshots/Outrun-inside.png?raw=true "Outrun-inside")
+
+Le dossier Street-Fighter
+![Alt text](/screenshots/StreetFighter-folder.png?raw=true "StreetFighter-folder")
+![Alt text](/screenshots/StreetFighter-inside.png?raw=true "StreetFighter-inside")
+
 ##  Comment installer ?
 Procédure testé sous Windows10
  1. A partir de l'adresse du site https://github.com/nordicpower/gamelistpower, choisir download puis Download ZIP
