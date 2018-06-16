@@ -7,7 +7,7 @@
 
 Gamelistpower est une série de scripts en python afin d'améliorer Recalbox.
 
-La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **collections** dans RecalBox *(avec le thème favori)* . Celle-ci permet de lancer des jeux sur plusieurs plateformes différentes au sein d'une seule et de les regrouper par dossier.
+La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **collections** dans RecalBox *(avec le thème favori)*. Celle-ci permet de lancer des jeux sur plusieurs plateformes différentes au sein d'une seule et de les regrouper par dossier.
 
 Ces dossiers de jeux multi-plateformes sont alimentés par une recherche de vos roms à travers les fichiers **gamelist.xml** et d'alimenter cette nouvelle plateforme collections.
 
@@ -39,7 +39,7 @@ Procédure testé sous Windows10
 
 ## Comment configurer ?
 
-Dans le fichier **rules_gensh.xml**, le fichier contient des règles de recherche permettant d'alimenter la plateforme collections, un exemple :
+Dans le fichier **rules_gensh.xml** (dans /recalbox/scripts/gamelistpower), le fichier contient des règles de recherche permettant d'alimenter la plateforme collections, un exemple :
 <br />`<rule>`<br />
 	`<name>mario</name>`<br />
 	`<searchAttribute>name</searchAttribute>`<br />
@@ -81,4 +81,4 @@ Deux méthodes sont disponibles :
 Il sera nécessaire de relancer RecalBox pour prendre en compte les nouvelles roms identifiées.
 
 ---------------------------------------------
-Editeur MD : https://stackedit.io/app#
+Mon éditeur MD en ligne : https://stackedit.io/app#
