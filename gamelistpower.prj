@@ -1,0 +1,40 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Use Relative Directory=1
+Relative to Project File=1
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Filter=
+Create Tagfile=0
+[Files]
+0=checkxml.py
+1=glp.ini
+2=glp.log
+3=mergexml.py
+4=pathGameList.py
+5=platform.py
+6=quickupdate.py
+7=README.md
+8=theme.py
+9=NORDICPOWER.md
+10=..\..\.emulationstation\es_systems.cfg
+11=..\..\.emulationstation\es_systems.tst
+12=system.py
+13=gamelistpower.py
+14=glplib\__init__.py
+15=glplib\glpXML.py
+16=glplib\glpTOOLS.py
+17=glplib\glpGAMEGEN.py
+18=glplib\glpES.py
+19=glplib\glpDIR.py
+20=rules.xml
+21=gamelistpower.ini
+22=glplib\glpRULES.py
+23=install.sh
+24=rules_gensh.xml
+25=rules_romcpy.xml
+26=glplib\recalbox\emulatorlauncher.py
+[Backup]
+LastComment=

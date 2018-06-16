@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--NORDIC POWER-->
+<rules>
+	<options>
+		<!-- AUTORISE %%NAME% %%name%% %%PLATEFORM%% %region%% %REGION%% -->
+		<titleformat>%%NAME%% (%%PLATEFORM%%)</titleformat>
+		<path>/mnt/d/dev-python/roms/collections</path>
+	</options>
+  <rule>
+    <name>pinball1</name>
+    <searchAttribute>name</searchAttribute>
+    <searchValue>pinball</searchValue>
+    <destination>/mnt/d/dev-python/roms/collections2/pinball</destination>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+  <rule>
+    <name>pinball2</name>
+    <searchAttribute>genre</searchAttribute>
+    <searchValue>pinball</searchValue>
+    <destination>/mnt/d/dev-python/roms/collections2/pinball</destination>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+  <rule>
+    <name>zombies1</name>
+    <searchAttribute>name</searchAttribute>
+    <searchValue>zombies</searchValue>
+    <destination>/mnt/d/dev-python/roms/collections2/zombies</destination>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+</rules>
