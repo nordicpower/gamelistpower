@@ -18,24 +18,26 @@ Ces dossiers de jeux multi-plateformes sont alimentés par une recherche de vos 
  3. Créer un dossier \\recalbox\share\nordicpower
  4. Créer un dossier \\recalbox\share\nordicpower\gamelistpower
  5. Dézipper le fichier gamelistpower-master.zip \\recalbox\share\nordicpower\gamelistpower
- 6. Ouvrir une session ssh
-`mount -o remount,rw /`
-`cd /recalbox/share/nordicpower`
-`cp -r gamelistpower /recalbox/scripts`
-`cd /recalbox/scripts/gamelistpower`
-`chmod 777 *.sh`
-`./install.sh`
+ 6. Ouvrir une session ssh<br />
+`mount -o remount,rw /`<br />
+`cd /recalbox/share/nordicpower`<br />
+`cp -r gamelistpower /recalbox/scripts`<br />
+`cd /recalbox/scripts/gamelistpower`<br />
+`chmod 777 *.sh`<br />
+`./install.sh`<br />
  7. Une recherche sera lancée, la nouvelle plateforme sera prise en compte après un reboot de recalbox
 
 ## Comment configurer ?
 
 Dans le fichier **rules_gensh.xml**, le fichier contient des règles de recherche permettant d'alimenter la plateforme collections, un exemple :
-`<rule>`
-	`<name>mario</name>`
-	`<searchAttribute>name</searchAttribute>`
-	`<searchValue>mario</searchValue>`
-	`<destination>/recalbox/share/roms/collections/mario</destination>`	`<preserveFavorite>false</preserveFavorite>`
-`</rule>`
+<br />`<rule>`<br />
+	`<name>mario</name>`<br />
+	`<searchAttribute>name</searchAttribute>`<br />
+	`<searchValue>mario</searchValue>`<br />
+	`<destination>/recalbox/share/roms/collections/mario</destination>`<br />
+	`<preserveFavorite>false</preserveFavorite>`<br />
+`</rule>`<br />
+
 Cette règle permettra de rechercher tous les jeux dont le nom contient mario et de copier le résultat dans le dossier /recalbox/share/roms/collections/mario. L'attribut favori ne sera pas conservé.
 
 ## Configuration par défaut
@@ -45,16 +47,16 @@ La configuration par défaut permet de rechercher et de classer des roms sur les
 
 ### Exclusion de dossiers ou de roms
 Il est possible d'exclure au sein d'une règle des roms ou des dossiers, il suffit d'indiquer le nom ou le chemin concerné
-`<exclusions>`
-    	`<exclusion>Mario Lemieux Hockey.zip</exclusion>`
-    	`<exclusion>/recalbox/share/roms/mario</exclusion>`
-`</exclusions>`
+`<exclusions>`<br />
+    	`<exclusion>Mario Lemieux Hockey.zip</exclusion>`<br />
+    	`<exclusion>/recalbox/share/roms/mario</exclusion>`<br />
+`</exclusions>`<br />
 
 ### Modifier le titre des roms
-`<options>`
-		`<titleformat>%%NAME%% (%%PLATEFORM%%)</titleformat>`
-		`<path>/recalbox/share/roms/collections</path>`
-	`</options>`
+`<options>`<br />
+		`<titleformat>%%NAME%% (%%PLATEFORM%%)</titleformat>`<br />
+		`<path>/recalbox/share/roms/collections</path>`<br />
+	`</options>`<br />
 La balise **titleformat** permet de personnaliser le titre de la rom dans la plateforme collection. La configuration par défaut utilise le nom de la rom et en parenthèse le nom de la plateforme source. Les variables disponibles sont %%NAME%% (la balise name), %%PLATEFORM%% (le nom de la plateforme) et %%REGION%% (la balise region). Il est possible d'avoir le résultat en majuscule ou minuscule par l'utilisation de la variable en majuscule ou minuscule (%%NAME ou %%name%%)
 
 ### Image des dossiers
@@ -67,16 +69,6 @@ Deux méthodes sont disponibles :
 *cd /recalbox/share/scripts/gamelistpower*
 *python gamelistpower.py generate_sh info*
 Il sera nécessaire de relancer RecalBox pour prendre en compte les nouvelles roms identifiées.
-
-
-
-
-
-
-
-
-
-
 
 ---------------------------------------------
 Editeur MD : https://stackedit.io/app#
