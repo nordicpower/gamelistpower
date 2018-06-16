@@ -37,6 +37,7 @@ fi
 
 if [ -d $PATH_SRC_IMAGES ];then
 	cp $PATH_SRC_IMAGES/*.png $PATH_ROMS_COLLECTIONS/images
+	chmod 777 $PATH_SRC_IMAGES/*.sh
 	cp $PATH_SRC_IMAGES/*.sh $PATH_ROMS_COLLECTIONS
 	echo "Copie des images et sh"
 fi
