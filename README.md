@@ -5,11 +5,11 @@
 *amiga15@outlook.fr / https://twitter.com/nordicpower*
 ***Juin 2018***
 
-Gamelistpower est une série de scripts en python afin d'améliorer Recalbox.
+Gamelistpower est une série de scripts en python afin d'améliorer Recalbox sur Pi3.
 
-La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **collections** dans RecalBox *(avec le thème favori)*. Celle-ci permet de lancer des jeux sur plusieurs plateformes différentes au sein d'une seule et de les regrouper par dossier.
+La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **collections** dans RecalBox *(avec le thème favori)*. Celle-ci permet de lancer des jeux sur plusieurs plateformes différentes au sein d'une seule et de les regrouper par dossier, Tout-ceci sans recopier les roms, préservant ainsi l'espace disponible sur votre SD ou HDD!!
 
-Ces dossiers de jeux multi-plateformes sont alimentés par une recherche de vos roms à travers les fichiers **gamelist.xml** et d'alimenter cette nouvelle plateforme collections.
+Ces dossiers de jeux multi-plateformes sont issus par des recherche des métadonnées des roms (fichiers **gamelist.xml**), chaque rom trouvé possède alors un script de lancement (sh) et ces métadonnées sont recopiées dans le gamelist de la plateforme collections
 
 ##  Copies d'écran du résultat
 Le dossier Outrun
