@@ -58,7 +58,10 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>pang</searchValue>
     <destination>/recalbox/share/roms/collections/pang</destination>
-    <exclusions>crospang.zip|Zipang.zip</exclusions>
+    <exclusions>
+    	<exclusion>crospang.zip</exclusion>
+    	<exclusion>Zipang.zip</exclusion>
+    </exclusions>
     <preserveFavorite>false</preserveFavorite>
   </rule>
   <rule>
