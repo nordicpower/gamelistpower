@@ -22,17 +22,12 @@ Le dossier Street-Fighter
 
 ##  Comment installer ?
 Procédure testé sous Windows10
- 1. A partir de l'adresse du site https://github.com/nordicpower/gamelistpower, choisir download puis Download ZIP
- 2. Ouvrir le partage \\recalbox\share
- 3. Créer un dossier \\recalbox\share\nordicpower
- 4. Copier le fichier gamelistpower-master.zip \\recalbox\share\nordicpower
- 5. Bouton droit sur le fichier gamelistpower-master.zip, Menu extraire tout et Bouton OK
- 6. 
- 7. Ouvrir une session ssh<br />
+ 1. Ouvrir une session ssh<br />
 `mount -o remount,rw /`<br />
-`cd /recalbox/share/nordicpower/gamelistpower-master`<br />
-`cp -r gamelistpower-master /recalbox/scripts/gamelistpower`<br />
-`cd /recalbox/scripts/gamelistpower`<br />
+`cd /recalbox/share`<br />
+`wget https://github.com/nordicpower/gamelistpower/archive/master.tar.gz`<br />
+`tar xzvf master.tar.gz`<br />
+`cp -r /recalbox/share/gamelistpower-master /recalbox/scripts/gamelistpower`<br />
 `chmod 777 *.sh`<br />
 `./install.sh`<br />
  8. Une recherche sera lancée, la nouvelle plateforme sera prise en compte après un reboot de recalbox
