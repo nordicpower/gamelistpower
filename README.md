@@ -11,6 +11,8 @@ La version 0.9 de Gamelistpower installe une nouvelle plateforme dénommée **co
 
 Ces dossiers de jeux multi-plateformes sont issus par des recherche des métadonnées des roms (fichiers **gamelist.xml**), chaque rom trouvé possède alors un script de lancement (sh) et ces métadonnées sont recopiées dans le gamelist de la plateforme collections
 
+Un guide des 1er pas est fourni dans le Wiki !(https://github.com/nordicpower/gamelistpower/wiki)
+
 ##  Copies d'écran du résultat
 Le dossier Outrun
 ![Alt text](/screenshots/Outrun-folder.png?raw=true "Outrun-folder")
@@ -21,7 +23,7 @@ Le dossier Street-Fighter
 ![Alt text](/screenshots/StreetFighter-inside.png?raw=true "StreetFighter-inside")
 
 ##  Comment installer ?
-Procédure testé sous Windows10
+
  1. Ouvrir une session ssh<br />
 `mount -o remount,rw /`<br />
 `cd /recalbox/share`<br />
@@ -30,7 +32,7 @@ Procédure testé sous Windows10
 `cp -r /recalbox/share/gamelistpower-master /recalbox/scripts/gamelistpower`<br />
 `chmod 777 *.sh`<br />
 `./install.sh`<br />
- 8. Une recherche sera lancée, la nouvelle plateforme sera prise en compte après un reboot de recalbox
+2. Une recherche sera lancée, la nouvelle plateforme sera prise en compte après un reboot de recalbox
 
 ## Comment configurer ?
 
