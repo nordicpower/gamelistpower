@@ -106,3 +106,4 @@ venv.bak/
 *.pui
 *.bup
 README.md.old.TXT
+*.THANOS
