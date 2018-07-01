@@ -14,11 +14,11 @@ Ces dossiers de jeux multi-plateformes sont issus par des recherche des métadon
 Un guide des 1er pas est fourni dans le Wiki !(https://github.com/nordicpower/gamelistpower/wiki)
 
 ##  Copies d'écran du résultat
-Le dossier Outrun
+Le dossier Outrun (Recalbox 18..06.27) 
 ![Alt text](/screenshots/Outrun-folder-RECALBOX-18.06.27.png?raw=true "Outrun-folder")
 ![Alt text](/screenshots/Outrun-inside.png?raw=true "Outrun-inside")
 
-Le dossier Street-Fighter
+Le dossier Street-Fighter (Recalbox 18.04.20) 
 ![Alt text](/screenshots/StreetFighter-folder.png?raw=true "StreetFighter-folder")
 ![Alt text](/screenshots/StreetFighter-inside.png?raw=true "StreetFighter-inside")
 
