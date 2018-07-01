@@ -15,7 +15,7 @@ Un guide des 1er pas est fourni dans le Wiki !(https://github.com/nordicpower/ga
 
 ##  Copies d'écran du résultat
 Le dossier Outrun
-![Alt text](/screenshots/Outrun-folder.png?raw=true "Outrun-folder")
+![Alt text](/screenshots/Outrun-folder-RECALBOX-18.06.27.png?raw=true "Outrun-folder")
 ![Alt text](/screenshots/Outrun-inside.png?raw=true "Outrun-inside")
 
 Le dossier Street-Fighter
