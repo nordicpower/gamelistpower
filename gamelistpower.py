@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                            - VERSION CONSOLE -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 20/09/2016-11/06/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.01 20/09/2016-01/07/2018 #
 #------------------------------------------------------------------------------#
 #Création des entrées folder des nouveaux dossiers                             #
 #Suppression des entrées folder inexistantes dans les dossiers                 #
@@ -27,7 +27,7 @@ from threading import Thread
 from glplib import *
 	
 #CONSTANTS-----------------------------------------------------------------------
-VERSION='0.9.00 BETA 11/06/2018'
+VERSION='0.9.01 BETA 01/07/2018'
 SOURCE_NAME='NordicPower'
 SEUIL_AFFICHAGE_CHECKPICTURES=1
 SEUIL_SAUVEGARDE_BIGROM=50 #20
@@ -1064,6 +1064,7 @@ class GameListPatcher(Thread,ObjectWithEvents):
 		es_config_extension=[]    		#Liste des extensions des roms pour une configuration
 		plateform_collection=''       #Path de plateforme cible collection
 		format_titre="%%NAME%% (%%PLATEFORM%%)" #Format par defaut du titre
+		bNetPlayInCommandCollection=False			  #Support de %NETPLAY% dans ligne de commande de collection
 		
 		self.running=True
 		if self._affichage == 'console':logger.info('#'*79) 
@@ -1123,8 +1124,12 @@ class GameListPatcher(Thread,ObjectWithEvents):
 			else:
 				logger.critical(msg_local.get(('MSG_CRITICAL_GLP_RULE_NOT_EXIST',config.language)).format('rules_romcpy.xml'))
 				sys.exit(1)
-				
+		
+		
 		if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]:
+			#Recherche de la commande pour vérifier le support NETPLAY (
+			if configs_ES.search_system_by_short_path(get_short_path_from_root(config.rootPath,plateform_collection)).command in '%NETPLAY%':
+				bNetPlayInCommandCollection=True
 			#Suppression de l'ensemble des fichiers sh, ils sont regénérés ensuite (suppression des sh obsolètes)
 			delete_commands_for_multi(rules)
 			#Creation des dossiers destinations
@@ -1295,7 +1300,7 @@ class GameListPatcher(Thread,ObjectWithEvents):
 				[self._config.top_folder_name_dir,self._config.last_folder_name_dir,self._config.best_folder_name_dir,self._config.ko_folder_name_dir],
 				self._config.default_game_picture)
 				if len(local_match_results_rules)>0:
-					generate_launcher_for_multi(config,plateform_collection,local_match_results_rules,format_titre)
+					generate_launcher_for_multi(config,plateform_collection,local_match_results_rules,format_titre,bNetPlayInCommandCollection)
 				
 				
 			#Ligne de séparation

@@ -7,7 +7,7 @@
 # Generation d'un fichier gamelist "collection" selon criteres de recherche    #
 # dans les autres gamelist.xml                                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 17/04/2017-11/06/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.01 17/04/2017-01/07/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -290,7 +290,7 @@ def update_folders_attributes(config,rules):
 			gamesList_multi.save_xml_file(os.path.join(config.folder_path_multi,NOM_GAMELIST_XML))
 			
 
-def generate_launcher_for_multi(config,plateform_collection,match_results_rules,format_titre="%%NAME%% (%%PLATEFORM%%)"):
+def generate_launcher_for_multi(config,plateform_collection,match_results_rules,format_titre="%%NAME%% (%%PLATEFORM%%)",bNetPlayInCommandCollection=False):
 	"""generation des launchers"""
 	
 	#Chargement XML avec MiniDom :-<
@@ -326,7 +326,10 @@ def generate_launcher_for_multi(config,plateform_collection,match_results_rules,
 		command = command.replace('%EMULATOR%',match_results_rule.emulator)
 		command = command.replace('%CORE%',match_results_rule.core)
 		command = command.replace('%RATIO%',match_results_rule.ratio)
-		
+		#Suppr variable NETPLAY si absent de la commande de lancement
+		if bNetPlayInCommandCollection==False:
+			command = command.replace(' %NETPLAY%','')
+		#Nom du fichier
 		#BUG Nom avec des . [:-1]
 		name_file_launcher = match_results_rule.name + '_' + get_last_folder_plateform(match_results_rule.plateform) + '_' + os.path.splitext(match_results_rule.game.get_filename_rom())[0].strip() + '.sh'
 		fullpath_launcher = os.path.expanduser(match_results_rule.dest_path + os.sep + name_file_launcher)
