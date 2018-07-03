@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                            - VERSION CONSOLE -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.01 20/09/2016-01/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.02 20/09/2016-02/07/2018 #
 #------------------------------------------------------------------------------#
 #Création des entrées folder des nouveaux dossiers                             #
 #Suppression des entrées folder inexistantes dans les dossiers                 #
@@ -27,7 +27,7 @@ from threading import Thread
 from glplib import *
 	
 #CONSTANTS-----------------------------------------------------------------------
-VERSION='0.9.01 BETA 01/07/2018'
+VERSION='0.9.02 BETA 02/07/2018'
 SOURCE_NAME='NordicPower'
 SEUIL_AFFICHAGE_CHECKPICTURES=1
 SEUIL_SAUVEGARDE_BIGROM=50 #20
@@ -1127,6 +1127,12 @@ class GameListPatcher(Thread,ObjectWithEvents):
 		
 		
 		if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]:
+			#Cas particulier collection sans gamelist.xml cible 
+			if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]:
+				if not os.path.isfile(os.path.join(plateform_collection,NOM_GAMELIST_XML)):
+					gamesList = GamesList()
+					gamesList.create_root_xml()
+					gamesList.save_xml_file(os.path.join(plateform_collection,NOM_GAMELIST_XML))
 			#Recherche de la commande pour vérifier le support NETPLAY (
 			if configs_ES.search_system_by_short_path(get_short_path_from_root(config.rootPath,plateform_collection)).command in '%NETPLAY%':
 				bNetPlayInCommandCollection=True
@@ -1190,16 +1196,20 @@ class GameListPatcher(Thread,ObjectWithEvents):
 					es_config_default_core=''
 					es_config_extension=[]
 					logger.debug(msg_local.get(('MSG_DEBUG_GLP_ESSYSTEM_UNKNOW_PLATEFORM',config.language)).format(''))
-
+			
 			#Chargement XML avec MiniDom :-<
 			gamesList = GamesList()
 			try:
-				gamesList.import_xml_file(GameListDirectory + os.sep + NOM_GAMELIST_XML)
+				gamesList.import_xml_file(GameListDirectory + os.sep + NOM_GAMELIST_XML,True)
 			except MyError:
 				#cas fichier gamelist.xml mal formé, on passe au dossier de roms suivant
 				gamelist_load_errors.append(GameListDirectory + os.sep + NOM_GAMELIST_XML)
 				continue
-		
+			except Exception as exception:
+				#fichier inexistant, on passe au dossier de roms suivant
+				gamelist_load_errors.append(GameListDirectory + os.sep + NOM_GAMELIST_XML)
+				continue
+				
 			#[ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY,ARG_MODE_TOP_ONLY,ARG_MODE_STATS_ONLY,ARG_MODE_NOIMAGE_ONLY,ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]
 			if self._mode in [ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY]:
 				#STEP 0 - Calcul du Hash et comparaison version précédente

@@ -7,7 +7,7 @@
 # Generation d'un fichier gamelist "collection" selon criteres de recherche    #
 # dans les autres gamelist.xml                                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.01 17/04/2017-01/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.02 17/04/2017-02/07/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -233,7 +233,7 @@ def update_folders_attributes(config,rules):
 		try:	
 			gamesList_multi.import_xml_file(config.folder_path_multi + os.sep + NOM_GAMELIST_XML)
 			gamesList_loaded=True
-		except MyError:
+		except Exception as exception:
 			pass
 	
 	#Parcourir des rules pour les dossiers
@@ -299,11 +299,13 @@ def generate_launcher_for_multi(config,plateform_collection,match_results_rules,
 	
 	if os.path.isfile(config.folder_path_multi + os.sep + NOM_GAMELIST_XML):
 		try:	
-			gamesList_multi.import_xml_file(plateform_collection + os.sep + NOM_GAMELIST_XML)
+			gamesList_multi.import_xml_file(plateform_collection + os.sep + NOM_GAMELIST_XML,False)
 			gamesList_loaded=True
-		except MyError:
-			pass
-	
+		except Exception as exception:
+			gamesList_loaded=False
+	else:
+		gamesList_loaded=False
+		
 	#TYPE_RULE_GENSH--------------------------------------------------------------
 	for match_results_rule in [x for x in match_results_rules if x.type==TYPE_RULE_GENSH]:
 		#Si fichier rom n'existe pas, on passe au suivant

@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE RECALBOX -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 10/10/2018-10/06/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.02 10/10/2018-02/07/2018 #
 ################################################################################
 
 #IMPORT NORDICPOWER-------------------------------------------------------------
@@ -45,6 +45,7 @@ class Emulator():
 def getRecalBoxEmulators():
 	# Extrait du fichier /usr/lib/python2.7/site-packages/configgen/emulatorlauncher.py
 	# 20/04/2018 - 18.04.20
+	# 02/07/2018 - 18.06.27
 	
 	# START
 	# List emulators with their cores rest mupen64, scummvm
@@ -75,6 +76,7 @@ def getRecalBoxEmulators():
 	emulators["fba"] = Emulator(name='fba', emulator='fba2x')
 	emulators["fba_libretro"] = Emulator(name='fba_libretro', emulator='libretro', core='fba')
 	emulators["advancemame"] = Emulator(name='advancemame', emulator='advmame')
+	emulators["daphne"] = Emulator(name='daphne', emulator='daphne')
 	# Computers
 	emulators["msx"] = Emulator(name='msx', emulator='libretro', core='bluemsx')
 	emulators["msx1"] = Emulator(name='msx1', emulator='libretro', core='bluemsx')
@@ -89,6 +91,7 @@ def getRecalBoxEmulators():
 	emulators["dos"] = Emulator(name='dos', emulator='dosbox', videomode='default')
 	emulators["c64"] = Emulator(name='c64', emulator='libretro', core='vice_x64')
 	emulators["x68000"] = Emulator(name='x68000', emulator='libretro', core='px68k')
+	emulators["thomson"] = Emulator(name='thomson', emulator='libretro', core='theodore')
 	#
 	emulators["ngp"] = Emulator(name='ngp', emulator='libretro', core='mednafen_ngp')
 	emulators["ngpc"] = Emulator(name='ngpc', emulator='libretro', core='mednafen_ngp')

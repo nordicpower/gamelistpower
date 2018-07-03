@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 31/10/2016-06/06/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.02 31/10/2016-02/07/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -36,6 +36,8 @@ msg_local={
 ('MSG_WARN_GLX_EMPTYFILE','EN'):u'Empty file {}',
 ('MSG_ERROR_GLX_EXCEPTION','FR'):u'{} : {}',
 ('MSG_ERROR_GLX_EXCEPTION','EN'):u'{} : {}',
+('MSG_ERROR_GLX_EXCEPTION_FILE','FR'):u'{} : {} avec le fichier {}',
+('MSG_ERROR_GLX_EXCEPTION_FILE','EN'):u'{} : {} with this file {}',
 ('MSG_DEBUG_GLX_MOVEROM','FR'):u'Modification path ancien={}, nouveau={}',
 ('MSG_DEBUG_GLX_MOVEROM','EN'):u'Move path old={}, new={}',
 ('MSG_DEBUG_GLX_UPD_DATE','FR'):u'UpdateDate xml={}, quick={}, refresh={}',
@@ -373,7 +375,7 @@ class GamesList:
 		self._gameListXmlDom = minidom.parseString('<?xml version="1.0" ?><gameList></gameList>')
 		self._empty_file_at_load = True
 			
-	def import_xml_file(self,fullpathname):
+	def import_xml_file(self,fullpathname,bStopIfGeneralError=True):
 		try:
 			self._gameListXmlDom = minidom.parse(fullpathname)
 			self.__load_update_dates()
@@ -411,13 +413,14 @@ class GamesList:
 					logger.info(msg_local.get(('MSG_INFO_XML_ADVISE2',config.language)).format(''))
 					logger.info(msg_local.get(('MSG_INFO_XML_LINE_SOURCE',config.language)).format(line_xml_error))
 				else:
-					logger.error(msg_local.get(('MSG_ERROR_GLX_EXCEPTION',config.language)).format('GamesList.import_xml_file',trace_message))
+					logger.error(msg_local.get(('MSG_ERROR_GLX_EXCEPTION_FILE',config.language)).format('GamesList.import_xml_file',trace_message,fullpathname))
 					
 				raise MyError('xml malformed')
 				
 		except Exception as exception:
-			logger.critical(msg_local.get(('MSG_ERROR_GLX_EXCEPTION',config.language)).format('GamesList.import_xml_file',type(exception).__name__))
-			sys.exit(1)		
+			logger.critical(msg_local.get(('MSG_ERROR_GLX_EXCEPTION_FILE',config.language)).format('GamesList.import_xml_file',type(exception).__name__,fullpathname))
+			if bStopIfGeneralError:
+				sys.exit(1)
 	
 	def save_xml_file(self,fullpathname,cleaning=True):
 		
