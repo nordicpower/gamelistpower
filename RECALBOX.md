@@ -131,6 +131,44 @@ optional arguments:
 #Ajout %NETPLAY% dans la ligne de lancement
 <command>python /usr/lib/python2.7/site-packages/configgen/emulatorlauncher.pyc %CONTROLLERSCONFIG% -system %SYSTEM% -rom %ROM% -emulator %EMULATOR% -core %CORE% -ratio %RATIO% %NETPLAY%</command>
 
+#Extrait code source SystemData.cpp
+command = strreplace(command, "%ROM%", rom);
+command = strreplace(command, "%CONTROLLERSCONFIG%", controlersConfig);
+command = strreplace(command, "%SYSTEM%", game->metadata.get("system"));
+command = strreplace(command, "%BASENAME%", basename);
+command = strreplace(command, "%ROM_RAW%", rom_raw);
+if (core != "")
+{
+	command = strreplace(command, "%EMULATOR%", "libretro");
+	command = strreplace(command, "%CORE%", core);
+}
+else
+{
+	command = strreplace(command, "%EMULATOR%", game->metadata.get("emulator"));
+	command = strreplace(command, "%CORE%", game->metadata.get("core"));
+}
+command = strreplace(command, "%RATIO%", game->metadata.get("ratio"));
+
+if (netplay == "client")
+{
+	command = strreplace(command, "%NETPLAY%", "-netplay client -netplay_port " + port + " -netplay_ip " + ip);
+}
+else if (netplay == "host")
+{
+    std::string hash = game->metadata.get("hash");
+    std::string hashcmd = "";
+    if (hash != "")
+    {
+        hashcmd = " -hash " + hash;
+    }
+	command = strreplace(command, "%NETPLAY%", "-netplay host -netplay_port " + RecalboxConf::getInstance()->get("global.netplay.port") + hashcmd);
+}
+else
+{
+	command = strreplace(command, "%NETPLAY%", "");
+}
+
+
 #Debug 18.04.20
 echo "ARGS:$@" >>/recalbox/share/system/logs/gamelistlauncher.log
 
