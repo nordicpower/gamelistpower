@@ -67,6 +67,22 @@ Il est possible d'exclure au sein d'une règle des roms ou des dossiers, il suff
 	`</options>`<br />
 La balise **titleformat** permet de personnaliser le titre de la rom dans la plateforme collection. La configuration par défaut utilise le nom de la rom et en parenthèse le nom de la plateforme source. Les variables disponibles sont %%NAME%% (la balise name), %%PLATEFORM%% (le nom de la plateforme) et %%REGION%% (la balise region). Il est possible d'avoir le résultat en majuscule ou minuscule par l'utilisation de la variable en majuscule ou minuscule (%%NAME ou %%name%%)
 
+Voici un exemple d'un rom scrappé de la plateforme MAME:
+`<game>`<br />
+`		<path>./outrun.zip</path>`<br />
+`		<name>out run</name>`<br />
+`		<releasedate>19860101T000000</releasedate>`<br />
+`		<developer>SEGA</developer>`<br />
+`		<publisher>SEGA</publisher>`<br />
+`		<region>WORLD</region>`<br />
+`		<genre>COURSE, CONDUITE</genre>`<br />
+`</game>`<br />
+Les titres dans gamelist collections seront les suivants en fonction des formats:<br />
+%%NAME%% (%%PLATEFORM%%)=> OUT RUN (MAME)<br />
+%%mame%% `[%%region%]`=> out run `[REGION]`<br />
+%%mame%% => out run<br />
+<br />
+
 ### Image des dossiers
 Les images de dossiers doivent être stockées dans le dossier /recalbox/share/roms/collections/images. Le script recherche une image du même nom que le dossier de destination de la règle (avec une extension png ou jpg) et créer l'entrée nécessaire. 
 
