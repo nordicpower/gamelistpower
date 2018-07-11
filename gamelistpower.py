@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                            - VERSION CONSOLE -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.02 20/09/2016-02/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.03 20/09/2016-11/07/2018 #
 #------------------------------------------------------------------------------#
 #Création des entrées folder des nouveaux dossiers                             #
 #Suppression des entrées folder inexistantes dans les dossiers                 #
@@ -27,7 +27,7 @@ from threading import Thread
 from glplib import *
 	
 #CONSTANTS-----------------------------------------------------------------------
-VERSION='0.9.02 BETA 02/07/2018'
+VERSION='0.9.03 BETA 11/07/2018'
 SOURCE_NAME='NordicPower'
 SEUIL_AFFICHAGE_CHECKPICTURES=1
 SEUIL_SAUVEGARDE_BIGROM=50 #20

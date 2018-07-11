@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.02 31/10/2016-02/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.03 31/10/2016-11/07/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -94,6 +94,7 @@ class Game:
 		self._core="" 			#RecalBox
 		self._ratio="" 			#RecalBox
 		self._romtype=""    #RecalBox
+		self._hashtag="" 		#RecalBox 18.06.27
 		
 		if kwargs is not None:
 			#mise à jour paramètre(s) nommé(s)
@@ -166,6 +167,8 @@ class Game:
 	def thumbnail(self):return self._thumbnail
 	@property
 	def romtype(self):return self._romtype
+	@property
+	def hashtag(self):return self._hashtag
 		
 	#setter-------------------------	
 	@path.setter
@@ -224,6 +227,8 @@ class Game:
 	def thumbnail(self,v):self._thumbnail=v
 	@romtype.setter
 	def romtype(self,v):self._romtype=v
+	@hashtag.setter
+	def hashtag(self,v):self._hashtag=v
 		
 	def get_filename_rom(self):
 		"""Extraction du nom de fichiers dans un path"""
@@ -259,6 +264,7 @@ class Game:
 		self.ratio = game_src.ratio
 		self.thumbnail = game_src.thumbnail
 		self.romtype = game_src.romtype
+		self.hashtag = game_src.hashtag
 		
 		#Id interne non transmis
 		self.internal_glp_id = time.strftime('%Y%m%dT%H%M%S',time.localtime())
@@ -490,6 +496,8 @@ class GamesList:
 			prettyXml = prettyXml.replace('<thumbnail/>','    <thumbnail/>')
 			prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
 			prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
+			prettyXml = prettyXml.replace('<hash/>','    <hash/>')
+			prettyXml = prettyXml.replace('<hash/>','    <hash/>')
 			
 			#Ecriture sur disque
 			f = open(fullpathname,'w')
@@ -686,6 +694,7 @@ class GamesList:
 		game.ratio = self.__get_sub_element_value(element,"ratio")
 		game.thumbnail = self.__get_sub_element_value(element,"thumbnail")
 		game.romtype = self.__get_sub_element_value(element,"romtype")
+		game.hashtag = self.__get_sub_element_value(element,"hash")
 		return game
 
 	
@@ -804,6 +813,8 @@ class GamesList:
 			self.__add_subelement_node(newdom_game_element,"thumbnail",newgame.thumbnail)
 		if newgame.romtype!='':
 			self.__add_subelement_node(newdom_game_element,"romtype",newgame.romtype)
+		if newgame.hashtag!='':
+			self.__add_subelement_node(newdom_game_element,"hash",newgame.hashtag)
 		gamelist_element[0].appendChild(newdom_game_element)
 		self.__tag_update()
 
@@ -853,6 +864,7 @@ class GamesList:
 				self.__set_sub_element_value(game_node,"ratio",updgame.ratio)
 				self.__set_sub_element_value(game_node,"thumbnail",updgame.thumbnail)
 				self.__set_sub_element_value(game_node,"romtype",updgame.romtype)
+				self.__set_sub_element_value(game_node,"hash",updgame.hashtag)
 				self.__tag_update()
 
 	

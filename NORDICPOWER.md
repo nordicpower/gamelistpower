@@ -3,6 +3,10 @@ EMULATIONSTATION GAMELISTPOWER
 # Change Log
 ***NORDIC POWER amiga15@outlook.fr***
 
+# [0.9.02] 2018-07-11 (Version public)
+###Gamelist.xml
+* Support de l'attribut <hash>
+
 # [0.9.02] 2018-06-11 (Version public)
 ###GameGen
 * Création automatique du fichier gamelist.xml si inexistant
