@@ -11,6 +11,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>giana</searchValue>
     <destination>/recalbox/share/roms/collections/giana</destination>
+    <destinationName>GIANA SISTERS</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
   <rule>
@@ -18,6 +19,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>magical drop</searchValue>
     <destination>/recalbox/share/roms/collections/magicdrop</destination>
+    <destinationName>MAGICAL DROP</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
   <rule>
@@ -32,8 +34,10 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>mario</searchValue>
     <destination>/recalbox/share/roms/collections/mario</destination>
+    <destinationName>MARIO</destinationName>
     <exclusions>
     	<exclusion>Mario Lemieux Hockey.zip</exclusion>
+    	<exclusion>Mario Andretti Racing (USA, Europe).zip</exclusion>
     	<exclusion>/recalbox/share/roms/mario</exclusion>
     	<exclusion>/recalbox/share/roms/collections2</exclusion>
     </exclusions>
@@ -44,6 +48,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>outrun</searchValue>
     <destination>/recalbox/share/roms/collections/outrun</destination>
+    <destinationName>OUTRUN</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
   <rule>
@@ -58,6 +63,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>pang</searchValue>
     <destination>/recalbox/share/roms/collections/pang</destination>
+    <destinationName>PANG</destinationName>
     <exclusions>
     	<exclusion>crospang.zip</exclusion>
     	<exclusion>Zipang.zip</exclusion>
@@ -76,7 +82,9 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>pinball</searchValue>
     <destination>/recalbox/share/roms/collections/pinball</destination>
+    <destinationName>PINBALL</destinationName>
     <preserveFavorite>false</preserveFavorite>
+    <!--<gamelistInfoFile>/recalbox/share/roms/collections/pinball.txt</gamelistInfoFile>-->
   </rule>
   <rule>
     <name>pinball2</name>
@@ -84,26 +92,36 @@
     <searchValue>pinball</searchValue>
     <destination>/recalbox/share/roms/collections/pinball</destination>
     <preserveFavorite>false</preserveFavorite>
+    <!--<gamelistInfoFile>/recalbox/share/roms/collections/pinball.txt</gamelistInfoFile>-->
   </rule>
   <rule>
     <name>rick</name>
     <searchAttribute>name</searchAttribute>
     <searchValue>rick</searchValue>
+    <destinationName>RICK DANGEROUS</destinationName>
     <destination>/recalbox/share/roms/collections/rick</destination>
     <exclusions>
+    	<exclusion>Barker Bill's Trick Shooting (Europe).zip</exclusion>
+    	<exclusion>BMX Trick Racer (USA).zip</exclusion>
+    	<exclusion>Championship Motocross 2001 featuring Ricky Carmichael (USA).zip</exclusion>
+    	<exclusion>Cool Bricks (Europe).zip</exclusion>
     	<exclusion>cuebrick.zip</exclusion>
     	<exclusion>Hat Trick (Europe).a78</exclusion>
     	<exclusion>LEGO Island 2 - The Brickster's Revenge.zip</exclusion>
-    	<exclusion>SSX Tricky.zip</exclusion>
-    	<exclusion>zintrckb.zip</exclusion>
-    	<exclusion>tricktrp.zip</exclusion>
-    	<exclusion>trckydoc.zip</exclusion>
-    	<exclusion>Tricky.zip</exclusion>
-    	<exclusion>Barker Bill's Trick Shooting (Europe).zip</exclusion>
-    	<exclusion>Championship Motocross 2001 featuring Ricky Carmichael (USA).zip</exclusion>
-    	<exclusion>Cool Bricks (Europe).zip</exclusion>
     	<exclusion>LEGO Island 2 - The Brickster's Revenge (USA).zip</exclusion>
+    	<exclusion>LEGO Island 2 - The Brickster's Revenge (USA) (En,Fr).zip</exclusion>
+    	<exclusion>MX 2002 featuring Ricky Carmichael (USA, Europe).zip</exclusion>
+    	<exclusion>Rick to Mick no Daibouken.rom</exclusion>
+    	<exclusion>SSX Tricky.zip</exclusion>
+    	<exclusion>SSX Tricky (USA, Europe) (En,Fr,De).zip</exclusion>
+    	<exclusion>Super International Cricket (Europe).zip</exclusion>
+    	<exclusion>Tetrix II (1994)(Hawkeye Soft)[cr Extreme].adf</exclusion>
+    	<exclusion>trckydoc.zip</exclusion>
     	<exclusion>Trick Boarder (USA).zip</exclusion>
+    	<exclusion>Trick Star (Europe) (En,Fr,De,Es,It).zip</exclusion>
+    	<exclusion>tricktrp.zip</exclusion>
+    	<exclusion>Tricky.zip</exclusion>
+    	<exclusion>zintrckb.zip</exclusion>
     </exclusions>
     <preserveFavorite>false</preserveFavorite>
   </rule>
@@ -112,6 +130,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>street fighter</searchValue>
     <destination>/recalbox/share/roms/collections/streetfighter</destination>
+    <destinationName>STREET FIGHTER</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
   <rule>
@@ -126,6 +145,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>tetris</searchValue>
     <destination>/recalbox/share/roms/collections/tetris</destination>
+    <destinationName>TETRIS</destinationName>
     <preserveFavorite>false</preserveFavorite>
     <exclusions>
     	<exclusion>/recalbox/share/roms/collections2</exclusion>
@@ -146,6 +166,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>puyo</searchValue>
     <destination>/recalbox/share/roms/collections/puyo</destination>
+    <destinationName>PUYO PUYO</destinationName>
     <preserveFavorite>false</preserveFavorite>
    </rule>
   <rule>
@@ -160,6 +181,7 @@
     <searchAttribute>name</searchAttribute>
     <searchValue>metalslug</searchValue>
     <destination>/recalbox/share/roms/collections/metalslug</destination>
+    <destinationName>METAL SLUG</destinationName>
     <exclusions>
     	<exclusion>/recalbox/share/roms/metal</exclusion>
     </exclusions>
@@ -173,6 +195,14 @@
     <exclusions>
     	<exclusion>/recalbox/share/roms/metal</exclusion>
     </exclusions>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+  <rule>
+    <name>turrican1</name>
+    <searchAttribute>name</searchAttribute>
+    <searchValue>turrican</searchValue>
+    <destination>/recalbox/share/roms/collections/turrican</destination>
+    <destinationName>TURRICAN</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
 </rules>

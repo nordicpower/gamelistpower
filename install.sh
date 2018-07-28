@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------#
 # Installation de la plateforme collections                                    #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 04/06/2018-16/06/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.04 04/06/2018-15/07/2018 #
 ################################################################################
 
 #INIT
@@ -20,9 +20,9 @@ echo "Deploiement de la plateforme Collections"
 
 ################################################################################
 #PARAMETRAGE FICHIERS RECALBOX
-cp gamelistpower.ini.RECALBOX gamelistpower.ini
-cp rules_gensh.xml.RECALBOX rules_gensh.xml
-cp rules_romcpy.xml.RECALBOX rules_romcpy.xml
+#cp gamelistpower.ini.RECALBOX gamelistpower.ini
+#cp rules_gensh.xml.RECALBOX rules_gensh.xml
+#cp rules_romcpy.xml.RECALBOX rules_romcpy.xml
 
 ################################################################################
 #PREPARATION DU DOSSIER
@@ -45,7 +45,9 @@ if [ -d $PATH_SRC_IMAGES ];then
 	cp $PATH_SRC_IMAGES/*.png $PATH_ROMS_COLLECTIONS/images
 	chmod 777 $PATH_SRC_IMAGES/*.sh
 	cp $PATH_SRC_IMAGES/*.sh $PATH_ROMS_COLLECTIONS
-	echo "Copie des images et sh"
+	cp $PATH_SRC_IMAGES/*.txt $PATH_ROMS_COLLECTIONS
+	echo "Copie des ressouces images, txt et sh"
+	
 fi
 
 ################################################################################

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<gameList>
+	<game id="69781" source="ScreenScraper">
+		<path>./pinball/Pinball Deluxe (Europe).zip</path>
+		<emulator>libretro</emulator>
+		<core>gambatte</core>
+		<name>Pinball Deluxe (Europe)</name>
+		<desc>Pinball Deluxe est en fait une compilation de deux autres jeux de flipper sortis sur GameBoy, Pinball Fantasies et Pinball Dreams. Le jeu propose donc les 7 tables de flipper présentes dans ces deux derniers titres.</desc>
+		<image>./pinball/downloaded_images/Pinball Deluxe (Europe)-image.png</image>
+		<marquee />
+		<video />
+		<thumbnail />
+		<rating>0</rating>
+		<releasedate>01010101T000000</releasedate>
+		<developer />
+		<publisher>GameTek UK Ltd.</publisher>
+		<genre>Flipper</genre>
+		<players />
+	</game>
+</gameList>

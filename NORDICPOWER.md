@@ -3,6 +3,16 @@ EMULATIONSTATION GAMELISTPOWER
 # Change Log
 ***NORDIC POWER amiga15@outlook.fr***
 
+# [0.9.05] 2018-07-11 (Version public)
+###GameGen
+* Ajout d'un nouveau noeud <destinationName> permettant de modifier le nom du 
+  dossier dans le gamelist.xml
+* Ajout d'un nouveau noued <gamelistInfoFile> permettant de remplacer les 
+  informations des noeuds <game> trouvés par des informations de ce gamelist
+#rules_gensh.xml
+* Ajout d'une nouvelle règle pour les jeux Turiccan
+* Réactualisation des règles avec des exclusions
+
 # [0.9.02] 2018-07-11 (Version public)
 ###Gamelist.xml
 * Support de l'attribut <hash>

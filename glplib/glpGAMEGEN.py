@@ -7,7 +7,7 @@
 # Generation d'un fichier gamelist "collection" selon criteres de recherche    #
 # dans les autres gamelist.xml                                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.02 17/04/2017-02/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.05 17/04/2017-28/07/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -41,6 +41,8 @@ msg_local={
 ('MSG_INFO_GLG_ROM_ADDED','EN'):u'Rom added: {}',
 ('MSG_WARN_GLG_EMULATOR_NOT_SUPPORTED','FR'):u'Emulateur non support\u00E9: {} pour la rom {}',
 ('MSG_WARN_GLG_EMULATOR_NOT_SUPPORTED','EN'):u'Emulator not supported: {} with this rom {}',
+('MSG_DEBUG_GLG_USE_EXTERNAL_GAMELIST','FR'):u'Utilisation Gamelist externe avec la rom {}',
+('MSG_DEBUG_GLG_USE_EXTERNAL_GAMELIST','EN'):u'Use external Gamelist with this rom {}',
 ('MSG_INFO_GLG_GEN_EXCLUDE','FR'):u'Exclusion du fichier: {}',
 ('MSG_INFO_GLG_GEN_EXCLUDE','EN'):u'Exclude file: {}'
 }
@@ -192,6 +194,21 @@ def search_games_for_multi(GameListDirectory,gamesList,plateform,es_system_name,
 						local_ratio = result_game.ratio
 						if local_ratio=='':
 							local_ratio = 'auto'
+						
+						#Enrichissement de l'objet Game par un gamelist externe
+						if rule.gamelistLoaded==True:
+							game_search_name = result_game.get_filename_rom()
+							game_search_name = ('.').join(game_search_name.split('.')[:-1])
+							try:
+								game_XML = rule.gamelistInfo.search_game_by_path(game_search_name)
+								logger.debug(msg_local.get(('MSG_DEBUG_GLG_USE_EXTERNAL_GAMELIST',config.language)).format(game_search_name))
+								result_game.smartCopy_from_game(game_XML)
+								
+							except MyError:
+								#Non trouvé
+								pass
+						
+						#Création du résultat
 						result = Result(name=rule.name,plateform=plateform,system=es_system_name,command=es_config_command,emulator=local_emulator,core=local_core,ratio=local_ratio,game=result_game,dest_path=rule.dest_path,
 						image_background=rule.image_background,image_screenshot=rule.image_screenshot,image_logo=rule.image_logo,textcolor=rule.textcolor,preserveFavorite=rule.preserveFavorite,type=rule.type)
 						Match_results_rules.append(result)
@@ -211,6 +228,21 @@ def search_games_for_multi(GameListDirectory,gamesList,plateform,es_system_name,
 					local_ratio = result_game.ratio
 					if local_ratio=='':
 							local_ratio = 'auto'
+					
+					#Enrichissement de l'objet Game par un gamelist externe
+					if rule.gamelistLoaded==True:
+						game_search_name = result_game.get_filename_rom()
+						game_search_name = ('.').join(game_search_name.split('.')[:-1])
+						try:
+							game_XML = rule.gamelistInfo.search_game_by_path(game_search_name)
+							logger.debug(msg_local.get(('MSG_DEBUG_GLG_USE_EXTERNAL_GAMELIST',config.language)).format(game_search_name))
+							result_game.smartCopy_from_game(game_XML)
+							
+						except MyError:
+							#Non trouvé
+							pass
+					
+					#Création du résultat
 					result = Result(name=rule.name,plateform=plateform,system=es_system_name,command=es_config_command,emulator=local_emulator,core=local_core,ratio=local_ratio,game=result_game,dest_path=rule.dest_path,
 					image_background=rule.image_background,image_screenshot=rule.image_screenshot,image_logo=rule.image_logo,textcolor=rule.textcolor,preserveFavorite=rule.preserveFavorite,type=rule.type)
 					Match_results_rules.append(result)
@@ -222,56 +254,22 @@ def search_games_for_multi(GameListDirectory,gamesList,plateform,es_system_name,
 	return Match_results_rules
 	
 
-def update_folders_attributes(config,rules):
+def update_folders_attributes(rules,gamesList):
 	"""ajout info sur folder"""
-	
-	#Chargement XML avec MiniDom :-<
-	gamesList_loaded=False
-	gamesList_multi = GamesList()
-	
-	if os.path.isfile(config.folder_path_multi + os.sep + NOM_GAMELIST_XML):
-		try:	
-			gamesList_multi.import_xml_file(config.folder_path_multi + os.sep + NOM_GAMELIST_XML)
-			gamesList_loaded=True
-		except Exception as exception:
-			pass
 	
 	#Parcourir des rules pour les dossiers
 	for rule in rules:
 		try:
+				
 			name_entry=rule.dest_path.replace('\\','/').split('/')[-1]
-			print name_entry, '.'+os.sep+name_entry
-			folder_XML = gamesList_multi.search_folder_by_path('.'+os.sep+name_entry)
-			print folder_XML
-			if rule.image_background=="":
-				folder_XML.background = ""
-			else:
-				alt_background = os.path.splitext(rule.image_background)[0]+'-folder'+os.path.splitext(rule.image_background)[1]
-				if os.path.isfile(alt_background):
-					folder_XML.background = alt_background
-				else:
-					folder_XML.background = rule.image_background
+			folder_XML = gamesList.search_folder_by_path('.'+os.sep+name_entry)
 			
-			if rule.image_screenshot=="":
-				folder_XML.screenshot = ""
-			else:
-				alt_screenshot = os.path.splitext(rule.image_screenshot)[0]+'-folder'+os.path.splitext(rule.image_screenshot)[1]
-				if os.path.isfile(alt_screenshot):
-					folder_XML.screenshot = alt_screenshot
-				else:
-					folder_XML.screenshot = rule.image_screenshot
-					
-			if rule.image_logo=="":
-				folder_XML.logo=""
-			else:
-				alt_logo = os.path.splitext(rule.image_logo)[0]+'-folder'+os.path.splitext(rule.image_logo)[1]
-				if os.path.isfile(alt_logo):
-					folder_XML.logo = alt_logo
-				else:
-					folder_XML.logo = rule.image_logo
-			
-			folder_XML.textcolor  = rule.textcolor
-			gamesList_multi.update_folder(folder_XML)
+			#entrée XML trouvé
+			if rule.dest_path_name !='':
+				folder_XML.name = rule.dest_path_name
+				
+			#mise à jour
+			gamesList.update_folder(folder_XML)
 			
 		except MyError:
 			#Folder non trouvé
@@ -280,16 +278,6 @@ def update_folders_attributes(config,rules):
 			logger.warn(msg_local.get(('MSG_ERROR_GLG_EXCEPTION',config.language)).format('update_folders_attributes',type(exception).__name__))
 			pass
 			
-	#Sauvegarde
-	if gamesList_loaded==True and gamesList_multi.modified:
-		if len(gamesList_multi.get_games())>SEUIL_SAUVEGARDE_BIGROM:
-			#logger.debug(msg_local.get(('MSG_INFO_GLP_PRG_SAVE_BIGROM',config.language)).format(NOM_GAMELIST_XML))
-			gamesList_multi.save_xml_file(os.path.join(config.folder_path_multi,NOM_GAMELIST_XML),False)
-		else:
-			#logger.debug(msg_local.get(('MSG_INFO_GLP_PRG_SAVE',config.language)).format(NOM_GAMELIST_XML))
-			gamesList_multi.save_xml_file(os.path.join(config.folder_path_multi,NOM_GAMELIST_XML))
-			
-
 def generate_launcher_for_multi(config,plateform_collection,match_results_rules,format_titre="%%NAME%% (%%PLATEFORM%%)",bNetPlayInCommandCollection=False):
 	"""generation des launchers"""
 	
@@ -367,7 +355,7 @@ def generate_launcher_for_multi(config,plateform_collection,match_results_rules,
 			try:
 				#MAJ du noeud existant
 				game_XML = gamesList_multi.search_game_by_path(local_path)
-				game_XML.copy_from_game(match_results_rule.game,True)
+				game_XML.smartCopy_from_game(match_results_rule.game)
 				game_XML.name=name_formated
 				#game_XML.name=match_results_rule.game.name + ' (' + get_last_folder_plateform(match_results_rule.plateform) + ')'
 				game_XML.background = match_results_rule.image_background
@@ -382,7 +370,7 @@ def generate_launcher_for_multi(config,plateform_collection,match_results_rules,
 			except MyError:
 				#Pas de noeud game trouvé
 				game_XML = Game()
-				game_XML.copy_from_game(match_results_rule.game)
+				game_XML.smartCopy_from_game(match_results_rule.game)
 				game_XML.path=local_path
 				game_XML.name=format_titre
 				game_XML.name=name_formated

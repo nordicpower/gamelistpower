@@ -269,6 +269,73 @@ class Game:
 		#Id interne non transmis
 		self.internal_glp_id = time.strftime('%Y%m%dT%H%M%S',time.localtime())
 		
+	def smartCopy_from_game(self,game_src):
+		"""Copie tous les attributs (en dehors du path) d'un objet game à un autre avec des contrôle de cohérence"""		
+		self.name = game_src.name
+		if game_src.desc!='':
+			self.desc = game_src.desc
+		if game_src.image!='' and os.path.isfile(game_src.image):
+			self.image = game_src.image
+		if game_src.rating!='':
+			self.rating = game_src.rating
+		if self.releasedate=='' or self.releasedate < game_src.releasedate:
+			self.releasedate = game_src.releasedate
+		if game_src.developer!='':
+			self.developer = game_src.developer
+		if game_src.publisher!='':
+			self.publisher = game_src.publisher
+		if game_src.genre!='':
+			self.genre = game_src.genre
+		if game_src.players!='':
+			self.players = game_src.players
+		if game_src.ref_id!='':
+			self.ref_id = game_src.ref_id
+		if game_src.source!='':
+			self.source = game_src.source
+		if game_src.playcount!='':
+			self.playcount = game_src.playcount
+		if self.lastplayed=='' or self.lastplayed < game_src.lastplayed:
+			self.lastplayed = game_src.lastplayed
+		if game_src.specific!='':
+			self.specific = game_src.specific
+		if game_src.hidden!='':
+			self.hidden = game_src.hidden
+		if game_src.background!='':
+			self.background = game_src.background
+		if game_src.screenshot!='':
+			self.screenshot = game_src.screenshot
+		if game_src.logo!='':
+			self.logo = game_src.logo
+		if game_src.textcolor!='':
+			self.textcolor = game_src.textcolor
+		if game_src.favorite!='':
+			self.favorite = game_src.favorite
+		if game_src.region!='':
+			self.region = game_src.region
+		if game_src.emulator!='':
+			self.emulator = game_src.emulator
+		self.core = game_src.core
+		if game_src.ratio!='':
+			self.ratio = game_src.ratio
+		if game_src.thumbnail!='':
+			self.thumbnail = game_src.thumbnail
+		if game_src.romtype!='':
+			self.romtype = game_src.romtype
+		if game_src.hashtag!='':
+			self.hashtag = game_src.hashtag
+		
+		#Id interne non transmis
+		self.internal_glp_id = time.strftime('%Y%m%dT%H%M%S',time.localtime())
+		
+		#Cleaning des dates
+		self.releasedate=self.cleaningDate(self.releasedate)
+		self.lastplayed=self.cleaningDate(self.lastplayed)
+
+	def cleaningDate(self,oldDate):
+		if oldDate=='01010101T000000':
+			return ''
+		else:
+			return oldDate
 		
 #CLASS-FOLDER-------------------------------------------------------------------------
 class Folder:

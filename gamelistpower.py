@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                            - VERSION CONSOLE -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.03 20/09/2016-11/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.05 20/09/2016-28/07/2018 #
 #------------------------------------------------------------------------------#
 #Création des entrées folder des nouveaux dossiers                             #
 #Suppression des entrées folder inexistantes dans les dossiers                 #
@@ -27,7 +27,7 @@ from threading import Thread
 from glplib import *
 	
 #CONSTANTS-----------------------------------------------------------------------
-VERSION='0.9.03 BETA 11/07/2018'
+VERSION='0.9.05 BETA 28/07/2018'
 SOURCE_NAME='NordicPower'
 SEUIL_AFFICHAGE_CHECKPICTURES=1
 SEUIL_SAUVEGARDE_BIGROM=50 #20
@@ -109,6 +109,8 @@ msg_local={
 ('MSG_INFO_GLP_PRG_SAVE','EN'):u'Save {}',
 ('MSG_INFO_GLP_PRG_SAVE_BIGROM','FR'):u'Sauvegarde de {}',
 ('MSG_INFO_GLP_PRG_SAVE_BIGROM','EN'):u'Save {}',
+('MSG_DEBUG_GLP_PRG_INIT','FR'):u'Initialisation mise \u00E0 jour',
+('MSG_DEBUG_GLP_PRG_INIT','EN'):u'Preparing',
 ('MSG_DEBUG_GLP_PRG_START','FR'):u'D\u00E9but de la mise \u00E0 jour',
 ('MSG_DEBUG_GLP_PRG_START','EN'):u'Start Updating',
 ('MSG_INFO_GLP_PRG_END','FR'):u'Fin',
@@ -1074,7 +1076,7 @@ class GameListPatcher(Thread,ObjectWithEvents):
 		else:logger.info('#'*71)
 		self._config.debug()
 		logger.debug(msg_local.get(('MSG_DEBUG_GLP_LAUNCH_ARG_MODE',config.language)).format(self._mode))
-		logger.debug(msg_local.get(('MSG_DEBUG_GLP_PRG_START',config.language)))
+		logger.debug(msg_local.get(('MSG_DEBUG_GLP_PRG_INIT',config.language)))
 		
 		GameListDirectories = list_gamelist_directories(self._config.rootPath,self._config.folder_name_exclusion,self._config.images_folder)
 		
@@ -1147,7 +1149,9 @@ class GameListPatcher(Thread,ObjectWithEvents):
 				pass
 			if plateform_collection!='':
 				GameListDirectories.append(plateform_collection)
-                        
+    
+		logger.debug(msg_local.get(('MSG_DEBUG_GLP_PRG_START',config.language)))
+    
 		#Recherche des répertoires de jeu et lancement des patchs
 		for GameListDirectory in GameListDirectories:
 			
@@ -1264,6 +1268,11 @@ class GameListPatcher(Thread,ObjectWithEvents):
 				#Ne pas sauvegarder car lecture uniquement sauf si cible
 				gamesList.modified=False
 				
+			#[ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY,ARG_MODE_TOP_ONLY,ARG_MODE_STATS_ONLY,ARG_MODE_NOIMAGE_ONLY,ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]
+			if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY] and es_config_command !='' and GameListDirectory in [plateform_collection] :
+				#Mise à jour attribut dossier
+				update_folders_attributes(rules,gamesList)
+				
 			#STEP END - Sauvegarde si intervention sur le fichier--------------------------------------------
 			if gamesList.modified:
 				
@@ -1304,7 +1313,7 @@ class GameListPatcher(Thread,ObjectWithEvents):
 						
 			#[ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY,ARG_MODE_TOP_ONLY,ARG_MODE_STATS_ONLY,ARG_MODE_NOIMAGE_ONLY,ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]
 			if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY] and es_config_command !='' and GameListDirectory not in [plateform_collection] :
-				#Generation
+				#Generation sh et noeud game
 				local_match_results_rules = search_games_for_multi(GameListDirectory,gamesList,self.GameListDirectory_Event,
 				es_config_system_name,es_config_command,es_config_default_emulator,es_config_default_core,rules,
 				[self._config.top_folder_name_dir,self._config.last_folder_name_dir,self._config.best_folder_name_dir,self._config.ko_folder_name_dir],
@@ -1312,17 +1321,12 @@ class GameListPatcher(Thread,ObjectWithEvents):
 				if len(local_match_results_rules)>0:
 					generate_launcher_for_multi(config,plateform_collection,local_match_results_rules,format_titre,bNetPlayInCommandCollection)
 				
-				
 			#Ligne de séparation
 			if self._affichage == 'console':logger.info('-'*79) 
 			else: logger.info('-'*71) 
 			
 			#Fin boucle répertoire
 
-		#Generation des infos folder
-		#Non supporté par Recalbox
-		#if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]:
-		#	update_folders_attributes(config,rules)
 
 		#[ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY,ARG_MODE_TOP_ONLY,ARG_MODE_STATS_ONLY,ARG_MODE_NOIMAGE_ONLY,ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]
 		if self._mode in [ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY]:

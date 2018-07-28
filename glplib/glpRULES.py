@@ -6,7 +6,7 @@
 #------------------------------------------------------------------------------#
 # Manipulation du fichier de regle pour le module GAMEGEN                      #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 28/05/2018-10/06/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.05 28/05/2018-28/07/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -19,6 +19,7 @@ import os
 
 #IMPORT NORDICPOWER-------------------------------------------------------------
 from glpTOOLS import *
+from glpXML import * 
 
 #MSG LOCALISATION---------------------------------------------------------------
 config=Config()
@@ -28,6 +29,8 @@ msg_local={
 ('MSG_WARN_RUL_SOURCE_NOT_SUPPORTED','EN'):u'Source {} not supported in this rule: {}',
 ('MSG_WARN_RUL_FOLDER_CREATION','FR'):u'Cr\u00E9 du dossier : {}',
 ('MSG_WARN_RUL_FOLDER_CREATION','EN'):u'Folder created: {}',
+('MSG_INFO_RUL_GAMELIST_LOADED','FR'):u'R\u00E8gle {}: le fichier {} a \u00E9t\u00E9 charg\u00E9',
+('MSG_INFO_RUL_GAMELIST_LOADED','EN'):u'Rule {}: File {} is successfully loaded',
 ('MSG_ERROR_RUL_EXCEPTION','FR'):u'{} : {}',
 ('MSG_ERROR_RUL_EXCEPTION','EN'):u'{} : {}'
 }
@@ -54,12 +57,16 @@ class Rule:
 		self._source=''
 		self._search=''
 		self._dest_path=''
+		self._dest_path_name=''
 		self._exclusion_files=[]
 		self._image_background=''
 		self._image_screenshot=''
 		self._image_logo=''
 		self._textcolor=''
 		self._preserveFavorite=''
+		self._gamelistInfoFile=''
+		self._gamelistInfo = GamesList()
+		self._gamelistLoaded = False
 		
 		if kwargs is not None:
 			#mise à jour paramètre(s) nommé(s)
@@ -80,6 +87,8 @@ class Rule:
 	@property
 	def dest_path(self):return self._dest_path
 	@property
+	def dest_path_name(self):return self._dest_path_name
+	@property
 	def exclusion_files(self):return self._exclusion_files
 	@property
 	def image_background(self):return self._image_background
@@ -91,7 +100,13 @@ class Rule:
 	def textcolor(self):return self._textcolor
 	@property
 	def preserveFavorite(self):return self._preserveFavorite
-		
+	@property
+	def gamelistInfoFile(self):return self._gamelistInfoFile
+	@property
+	def gamelistInfo(self):return self._gamelistInfo
+	@property
+	def gamelistLoaded(self):return self._gamelistLoaded
+	
 	#setter-------------------------	
 	@name.setter
 	def name(self,v):self._name=v
@@ -103,6 +118,8 @@ class Rule:
 	def search(self,v):self._search=v
 	@dest_path.setter
 	def dest_path(self,v):self._dest_path=v
+	@dest_path_name.setter
+	def dest_path_name(self,v):self._dest_path_name=v
 	@dest_path.setter
 	def exclusion_files(self,v):self._exclusion_files=v
 	@dest_path.setter
@@ -115,6 +132,11 @@ class Rule:
 	def textcolor(self,v):self._textcolor=v
 	@preserveFavorite.setter
 	def preserveFavorite(self,v):self._preserveFavorite=v
+	
+	@gamelistInfoFile.setter
+	def gamelistInfoFile(self,v):self._gamelistInfoFile=v
+	@gamelistInfo.setter
+	def gamelistInfo(self,v):self._gamelistInfo=v
 		
 #CLASS-RULEEXCEPTION---------------------------------------------------------
 class RuleException:
@@ -208,11 +230,13 @@ class DecodeXMLRules:
 		gameGenRule.source = self.__get_sub_element_value(element,"searchAttribute")
 		gameGenRule.search = self.__get_sub_element_value(element,"searchValue")
 		gameGenRule.dest_path = self.__get_sub_element_value(element,"destination")
+		gameGenRule.dest_path_name = self.__get_sub_element_value(element,"destinationName")
 		gameGenRule.image_background = self.__get_sub_element_value(element,"imageBackground")
 		gameGenRule.image_screenshot = self.__get_sub_element_value(element,"imageScreenshoot")
 		gameGenRule.image_logo = self.__get_sub_element_value(element,"imageLogo")
 		gameGenRule.textColor = self.__get_sub_element_value(element,"textColor")
 		gameGenRule.preserveFavorite = self.__get_sub_element_value(element,"preserveFavorite")
+		gameGenRule.gamelistInfoFile = self.__get_sub_element_value(element,"gamelistInfoFile")
 		
 		#Lecture des noeuds exceptions/exception
 		exclusion_files = []
@@ -223,6 +247,33 @@ class DecodeXMLRules:
 		except (AttributeError,IndexError): #si aucun noeud <exceptions> ou <exception>
 			pass
 		gameGenRule.exclusion_files = exclusion_files
+		
+		#Lecture gamelist
+		if gameGenRule.gamelistInfoFile!='':
+			if os.path.isfile(gameGenRule.gamelistInfoFile):
+				try:
+					gameGenRule.gamelistInfo.import_xml_file(gameGenRule.gamelistInfoFile,False)
+					gameGenRule.gamelistLoaded=True
+					for game in gameGenRule.gamelistInfo.get_games():
+						#suppression des paths et extension pour simplifier recherche
+						new_path = game.get_filename_rom()
+						new_path = ('.').join(new_path.split('.')[:-1])
+						gameGenRule.gamelistInfo.move_path_game(game,new_path)
+						
+					logger.info(msg_local.get(('MSG_INFO_RUL_GAMELIST_LOADED',config.language)).format(gameGenRule.name,gameGenRule.gamelistInfoFile))	
+					
+				except MyError:
+					#cas fichier gamelist.xml mal formé, on passe au dossier de roms suivant		
+					trace_message = traceback.format_exc(0).split('\n')[1]
+					logger.error(msg_local.get(('MSG_ERROR_RUL_EXCEPTION',config.language)).format('load '+gameGenRule.gamelistInfoFile+' KO-1',trace_message))		
+					pass
+				except Exception as exception:
+					#fichier inexistant, on passe au dossier de roms suivant
+					trace_message = traceback.format_exc(0).split('\n')[1]
+					logger.error(msg_local.get(('MSG_ERROR_RUL_EXCEPTION',config.language)).format('load '+gameGenRule.gamelistInfoFile+' KO-2',trace_message))		
+					pass
+		
+		
 		#print('EXC: '+'|'.join(map(str, gameGenRule.exclusion_files)))
 		return gameGenRule
 
