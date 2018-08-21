@@ -61,7 +61,7 @@ def main():
 		print('Chargement OK')
 		#print(gamesList.to_xml())
 	except MyError:
-		#cas fichier gamelist.xml mal formé, on passe au dossier de roms suivant
+		#cas fichier gamelist.xml mal formÃ©, on passe au dossier de roms suivant
 		print 'Erreur de chargement !'
 		sys.exit(1)
 	
