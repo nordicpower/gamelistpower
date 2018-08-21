@@ -30,7 +30,7 @@
     <preserveFavorite>false</preserveFavorite>
   </rule>
    <rule>
-    <name>mario</name>
+    <name>mario1</name>
     <searchAttribute>name</searchAttribute>
     <searchValue>mario</searchValue>
     <destination>/recalbox/share/roms/collections/mario</destination>
@@ -41,6 +41,14 @@
     	<exclusion>/recalbox/share/roms/mario</exclusion>
     	<exclusion>/recalbox/share/roms/collections2</exclusion>
     </exclusions>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+  <rule>
+    <name>mario2</name>
+    <searchAttribute>genre</searchAttribute>
+    <searchValue>mario</searchValue>
+    <destination>/recalbox/share/roms/collections/mario</destination>
+    <destinationName>MARIO</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
   <rule>
