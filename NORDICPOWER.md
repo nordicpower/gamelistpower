@@ -3,6 +3,11 @@ EMULATIONSTATION GAMELISTPOWER
 # Change Log
 ***NORDIC POWER amiga15@outlook.fr***
 
+# [0.9.06] 2018-08-21 (Version public)
+###gamelist
+* renommage du script xmlcheck.py en gamelist_check.py
+* creation du script gamelist_merge.py
+
 # [0.9.05] 2018-07-11 (Version public)
 ###GameGen
 * Ajout d'un nouveau noeud <destinationName> permettant de modifier le nom du 
