@@ -2,9 +2,9 @@
 #-*- coding: utf-8 -*-
 ################################################################################
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
-#                                - CHECK XML -                                 #
+#                                 - SORT XML -                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.07 14/05/2017-09/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.07 06/09/2018-09/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -21,17 +21,19 @@ from glplib import *
 
 #CONSTANTS ARGUMENTS LANCEMENT---------------------------------------------------
 ARG_MODE='mode'
-ARG_MODE_LOAD_ONLY='load'
-ARG_MODE_NOIMAGE_ATTR='noimage_attribute'
-ARG_MODE_NOGENRE_ATTR='nogenre_attribute'
-ARG_MODE_NOREGION_ATTR='noregion_attribute'
-ARG_MODE_HASH_MULTIPLE='hash_multiple'
+ARG_MODE_SORT_BY_PATH='path'
+ARG_MODE_SORT_BY_NAME='name'
+ARG_MODE_SORT_BY_REGION='region'
+ARG_MODE_SORT_BY_DEVELOPER='developer'
+ARG_MODE_SORT_BY_PUBLISHER='publisher'
+ARG_MODE_SORT_BY_RELEASEDATE='releasedate'
+
 ARG_FILE='file'
 
 #---------------------------------------------------------------------------------------------------
 def get_args():
-	parser = argparse.ArgumentParser(description='file checker of gamelist.xml',epilog='(C) NORDIC POWER')
-	parser.add_argument(ARG_MODE,choices=[ARG_MODE_LOAD_ONLY,ARG_MODE_NOIMAGE_ATTR,ARG_MODE_NOGENRE_ATTR,ARG_MODE_NOREGION_ATTR,ARG_MODE_HASH_MULTIPLE], default=ARG_MODE_LOAD_ONLY, help='mode')
+	parser = argparse.ArgumentParser(description='tri de fichier gamelist.xml',epilog='(C) NORDIC POWER')
+	parser.add_argument(ARG_MODE,choices=[ARG_MODE_SORT_BY_PATH,ARG_MODE_SORT_BY_NAME,ARG_MODE_SORT_BY_REGION,ARG_MODE_SORT_BY_DEVELOPER,ARG_MODE_SORT_BY_PUBLISHER,ARG_MODE_SORT_BY_RELEASEDATE], default=ARG_MODE_SORT_BY_PATH, help='mode')
 	parser.add_argument(ARG_FILE)
 	return parser.parse_args()
 
@@ -52,59 +54,35 @@ def main():
 	config.load_from_file()
 	
 	if os.path.getsize(args.file)==0:
-		print('file not existing !')
+		print('Fichier inexistant')
 		sys.exit(1)
 	
-	if args.mode==ARG_MODE_LOAD_ONLY:
-		#Lecture charset
-		print('charset:'+predict_encoding(args.file))
-	
+	#Chargement
 	gamesList = GamesList()
 	try:
 		gamesList.import_xml_file(args.file)
-		if args.mode==ARG_MODE_LOAD_ONLY:
-			print('file loading OK')
-			sys.exit(0)
+		print('Loading file')
 	except MyError:
 		#cas fichier gamelist.xml mal formé, on passe au dossier de roms suivant
-		print 'error while loading file !'
+		print 'Error while loading !'
 		sys.exit(1)
 	
-	bGameFound=False
+	#Tri
+	if args.mode not in ['path','name','desc','image','rating','releasedate','developer','publisher','genre','players','playcount','lastplayed','region','hash']:
+		print 'Error, unknow attribut '+args.mode+' !'
+		sys.exit(1)
 	
-	if args.mode==ARG_MODE_NOIMAGE_ATTR:
-		for game_src in gamesList.get_games():
-			if game_src.image=='':
-				print('game '+game_src.name+' without image')
-				bGameFound=True
-		if bGameFound==False:
-			print('no game found!')
-		sys.exit(0)	
+	print 'Sorting xml by ' + args.mode
+	gamesList_sorted = GamesList()
+	gamesList_sorted = gamesList.sort(args.mode)
 	
-	if args.mode==ARG_MODE_NOGENRE_ATTR:
-		for game_src in gamesList.get_games():
-			if game_src.genre=='':
-				print('game '+game_src.name+' without genre')
-				bGameFound=True
-		if bGameFound==False:
-			print('no game found!')
-		sys.exit(0)
+	print 'Saving'
+	newfilemame = args.file.replace('.xml','_sorted.xml')
+	gamesList_sorted.save_xml_file(newfilemame,True)
 	
-	if args.mode==ARG_MODE_NOREGION_ATTR:
-		for game_src in gamesList.get_games():
-			if game_src.region=='':
-				print('game '+game_src.name+' without region')
-				bGameFound=True
-		if bGameFound==False:
-			print('no game found!')
-		sys.exit(0)
+	print 'New file available on '+newfilemame
+	print 'End'
 	
-	if args.mode==ARG_MODE_HASH_MULTIPLE:
-		for game_src in gamesList.get_games():
-			if " " in game_src.hashtag:
-				print('game '+game_src.name+' with multiple files')
-		
-		sys.exit(0)
 	#Fin
 	sys.exit(0)
 

@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.03 31/10/2016-11/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.07 31/10/2016-09/09/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -447,7 +447,7 @@ class GamesList:
 	def create_root_xml(self):
 		self._gameListXmlDom = minidom.parseString('<?xml version="1.0" ?><gameList></gameList>')
 		self._empty_file_at_load = True
-			
+		
 	def import_xml_file(self,fullpathname,bStopIfGeneralError=True):
 		try:
 			self._gameListXmlDom = minidom.parse(fullpathname)
@@ -559,11 +559,11 @@ class GamesList:
 			prettyXml = prettyXml.replace('<core/>','    <core/>')
 			prettyXml = prettyXml.replace('<ratio>','    <ratio>')
 			prettyXml = prettyXml.replace('<ratio/>','    <ratio/>')
+			prettyXml = prettyXml.replace('<thumbnail>','    <thumbnail>')
 			prettyXml = prettyXml.replace('<thumbnail/>','    <thumbnail/>')
-			prettyXml = prettyXml.replace('<thumbnail/>','    <thumbnail/>')
+			prettyXml = prettyXml.replace('<romtype>','    <romtype>')
 			prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
-			prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
-			prettyXml = prettyXml.replace('<hash/>','    <hash/>')
+			prettyXml = prettyXml.replace('<hash>','    <hash>')
 			prettyXml = prettyXml.replace('<hash/>','    <hash/>')
 			
 			#Ecriture sur disque
@@ -578,6 +578,21 @@ class GamesList:
 			f = codecs.lookup("utf-8")[3](f)
 			self._gameListXmlDom.writexml(f, encoding="utf-8")
 			f.close()
+	
+	
+	def sort(self,tri1='name',tri2='name'):
+		"""Tri des noeuds XML selon deux clés"""
+		gamesList_sorted = GamesList()
+		gamesList_sorted.create_root_xml()
+		
+		for folder_sorted in sorted(self.get_folders(),key=attrgetter(tri1,tri2)):
+			gamesList_sorted.add_folder(folder_sorted)
+	
+		for game_sorted in sorted(self.get_games(),key=attrgetter(tri1,tri2)):
+			gamesList_sorted.add_game(game_sorted)
+			
+		return gamesList_sorted
+		
 	
 	#debug----------------------------------------------------------------	
 	def to_xml(self):

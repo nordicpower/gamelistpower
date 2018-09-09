@@ -7,7 +7,7 @@
 # Generation d'un fichier gamelist "collection" selon criteres de recherche    #
 # dans les autres gamelist.xml                                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.05 17/04/2017-28/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.07 17/04/2017-06/09/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -174,10 +174,10 @@ def search_games_for_multi(GameListDirectory,gamesList,plateform,es_system_name,
 					#exclusion par attribut cache gamelist.xml
 					if result_game.hidden=='true':
 						rom_to_exclude = True
-					#recherche doublon
+					#recherche doublon sur la même chemin cible et nom de rom
 					if rom_to_exclude == False:
 						for match_results_rule in Match_results_rules:
-							if match_results_rule.game == result_game:
+							if match_results_rule.game == result_game and match_results_rule.dest_path == rule.dest_path :
 								rom_to_exclude = True
 					
 					#Ajout du resultat

@@ -3,6 +3,16 @@ EMULATIONSTATION GAMELISTPOWER
 # Change Log
 ***NORDIC POWER amiga15@outlook.fr***
 
+# [0.9.07] 2018-09-09
+###gamelist_sort
+* creation du script gamelist_sort.py pour trier le contenu d'un fichier xml
+* creation du script gamelist_change_attr.py pour modifier les attributs <region> d'un fichier xml
+* mise a jour du script gamelist_check.py : recherche des noeuds sans image, sans region, sans genre
+###GameGen
+* Correction de la recherche des doublons : uniquement au meme niveau de dossier (balise <destination>)
+###Gamelist.xml
+* Correction formatage XML
+
 # [0.9.06] 2018-08-21 (Version public)
 ###gamelist
 * renommage du script xmlcheck.py en gamelist_check.py

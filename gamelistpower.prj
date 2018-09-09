@@ -36,5 +36,9 @@ Create Tagfile=0
 24=rules_gensh.xml
 25=rules_romcpy.xml
 26=glplib\recalbox\emulatorlauncher.py
+27=gamelist_check.py
+28=gamelist_merge.py
+29=gamelist_sort.py
+30=gamelist_change_attr.py
 [Backup]
 LastComment=

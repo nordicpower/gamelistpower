@@ -3,7 +3,7 @@
 # Readme / lisez-moi
 ***Par Nordicpower***
 *amiga15@outlook.fr / https://twitter.com/nordicpower*
-***Juin 2018***
+***Septembre 2018***
 
 Gamelistpower est une série de scripts en python afin d'améliorer Recalbox sur Pi3.
 
@@ -93,6 +93,13 @@ Deux méthodes sont disponibles :
 *cd /recalbox/share/scripts/gamelistpower*
 *python gamelistpower.py generate_sh info*
 Il sera nécessaire de relancer RecalBox pour prendre en compte les nouvelles roms identifiées.
+
+
+## Scripts complémentaires python (appel via SSH uniquement)
+- gamelist_change_attr.py : permet de modifier automatiquement de valeurs d'attribut (extraire la region du nom du fichier)
+- gamelist_check.py: permet de tester le chargement d'un fichier en python
+- gamelist_merge.py: permet de fusionner deux fichiers XLM 
+- gamelist_sort.py : permet de trier les entrées XML selon un attribut
 
 ---------------------------------------------
 Mon éditeur MD en ligne : https://stackedit.io/app#
