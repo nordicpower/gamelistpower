@@ -27,14 +27,17 @@ ARG_MODE_SORT_BY_REGION='region'
 ARG_MODE_SORT_BY_DEVELOPER='developer'
 ARG_MODE_SORT_BY_PUBLISHER='publisher'
 ARG_MODE_SORT_BY_RELEASEDATE='releasedate'
-
 ARG_FILE='file'
+ARG_SORT_DESC='--descending'
+ARG_OVERWRITE='--overwrite'
 
 #---------------------------------------------------------------------------------------------------
 def get_args():
 	parser = argparse.ArgumentParser(description='tri de fichier gamelist.xml',epilog='(C) NORDIC POWER')
 	parser.add_argument(ARG_MODE,choices=[ARG_MODE_SORT_BY_PATH,ARG_MODE_SORT_BY_NAME,ARG_MODE_SORT_BY_REGION,ARG_MODE_SORT_BY_DEVELOPER,ARG_MODE_SORT_BY_PUBLISHER,ARG_MODE_SORT_BY_RELEASEDATE], default=ARG_MODE_SORT_BY_PATH, help='mode')
 	parser.add_argument(ARG_FILE)
+	parser.add_argument(ARG_SORT_DESC,action="store_true")
+	parser.add_argument(ARG_OVERWRITE,action="store_true")
 	return parser.parse_args()
 
 #---------------------------------------------------------------------------------------------------
@@ -53,8 +56,17 @@ def main():
 	#Lecture Configuration
 	config.load_from_file()
 	
+	#Test des arguments
+	if args.mode not in GamesList().getGameXMLAttributeName():
+		print 'Error, unknown attribut '+args.mode+' !'
+		sys.exit(1)
+	
+	SortDescending=False
+	if args.descending:
+		SortDescending=True
+	
 	if os.path.getsize(args.file)==0:
-		print('Fichier inexistant')
+		print('file not existing')
 		sys.exit(1)
 	
 	#Chargement
@@ -68,16 +80,17 @@ def main():
 		sys.exit(1)
 	
 	#Tri
-	if args.mode not in ['path','name','desc','image','rating','releasedate','developer','publisher','genre','players','playcount','lastplayed','region','hash']:
-		print 'Error, unknow attribut '+args.mode+' !'
-		sys.exit(1)
-	
-	print 'Sorting xml by ' + args.mode
+	if SortDescending:
+		print 'Sorting xml by ' + args.mode + ' descending'
+	else:
+		print 'Sorting xml by ' + args.mode + ' ascending'
 	gamesList_sorted = GamesList()
-	gamesList_sorted = gamesList.sort(args.mode)
+	gamesList_sorted = gamesList.sort(args.mode,'name',SortDescending)
 	
 	print 'Saving'
 	newfilemame = args.file.replace('.xml','_sorted.xml')
+	if args.overwrite:
+		newfilemame = args.file
 	gamesList_sorted.save_xml_file(newfilemame,True)
 	
 	print 'New file available on '+newfilemame

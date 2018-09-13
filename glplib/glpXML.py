@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.07 31/10/2016-09/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.08 31/10/2016-11/09/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -336,7 +336,7 @@ class Game:
 			return ''
 		else:
 			return oldDate
-		
+			
 #CLASS-FOLDER-------------------------------------------------------------------------
 class Folder:
 	"""POJO Folder Class from Class Element of gamelist.xml
@@ -417,13 +417,27 @@ class Folder:
 class GamesList:
 	"""Class Gameslist of gamelist.xml"""
 	_gameListXmlDom = minidom.getDOMImplementation()
-	_CLASS_GAME_NODENAME="game"
-	_CLASS_FOLDER_NODENAME="folder"
-	_CLASS_GAMELIST_NODENAME="gameList"
+	
 	_last_updated_date=""
 	_last_quickupdated_date=""
 	_empty_file_at_load=False
 	_refresh_folders="no"
+	
+	
+	#XML definition----------------------------------------------------------------	
+	_CLASS_GAME_NODENAME="game"
+	_CLASS_FOLDER_NODENAME="folder"
+	_CLASS_GAMELIST_NODENAME="gameList"
+	
+	def getGameXMLAttributeName(self):
+		standard = ['path','name','desc','image','rating','releasedate','developer','publisher','genre','region','players','playcount','lastplayed','hidden','favorite']
+		recalbox = ['emulator','emulators','cores','core','ratio','romtype','thumbnail','hash']
+		happigc  = ['background','screenshot','logo','textcolor']
+		
+		standard.extend(recalbox)
+		standard.extend(happigc)
+		
+		return standard
 	
 	#property----------------------------------------------------------------	
 	@property
@@ -514,57 +528,62 @@ class GamesList:
 			prettyXml = prettyXml.replace('</game>','  </game>')
 			prettyXml = prettyXml.replace('<folder','  <folder')
 			prettyXml = prettyXml.replace('</folder>','  </folder>')
-			prettyXml = prettyXml.replace('<name>','    <name>')
-			prettyXml = prettyXml.replace('<desc>','    <desc>')
-			prettyXml = prettyXml.replace('<desc/>','    <desc/>')
-			prettyXml = prettyXml.replace('<path>','    <path>')
-			prettyXml = prettyXml.replace('<image>','    <image>')
-			prettyXml = prettyXml.replace('<rating>','    <rating>')
-			prettyXml = prettyXml.replace('<rating/>','    <rating/>')
-			prettyXml = prettyXml.replace('<releasedate>','    <releasedate>')
-			prettyXml = prettyXml.replace('<releasedate/>','    <releasedate/>')
-			prettyXml = prettyXml.replace('<developer>','    <developer>')
-			prettyXml = prettyXml.replace('<developer/>','    <developer/>')
-			prettyXml = prettyXml.replace('<publisher>','    <publisher>')
-			prettyXml = prettyXml.replace('<publisher/>','    <publisher/>')
-			prettyXml = prettyXml.replace('<genre>','    <genre>')
-			prettyXml = prettyXml.replace('<genre/>','    <genre/>')
-			prettyXml = prettyXml.replace('<players>','    <players>')
-			prettyXml = prettyXml.replace('<players/>','    <players/>')
-			prettyXml = prettyXml.replace('<playcount>','    <playcount>')
-			prettyXml = prettyXml.replace('<playcount/>','    <playcount/>')
-			prettyXml = prettyXml.replace('<lastplayed>','    <lastplayed>')
-			prettyXml = prettyXml.replace('<lastplayed/>','    <lastplayed/>')
-			prettyXml = prettyXml.replace('<hidden>','    <hidden>')
-			prettyXml = prettyXml.replace('<hidden/>','    <hidden/>')
-			prettyXml = prettyXml.replace('<background>','    <background>')
-			prettyXml = prettyXml.replace('<background/>','    <background/>')
-			prettyXml = prettyXml.replace('<screenshot>','    <screenshot>')
-			prettyXml = prettyXml.replace('<screenshot/>','    <screenshot/>')
-			prettyXml = prettyXml.replace('<logo>','    <logo>')
-			prettyXml = prettyXml.replace('<logo/>','    <logo/>')
-			prettyXml = prettyXml.replace('<textcolor>','    <textcolor>')
-			prettyXml = prettyXml.replace('<textcolor/>','    <textcolor/>')
-			prettyXml = prettyXml.replace('<favorite>','    <favorite>')
-			prettyXml = prettyXml.replace('<favorite/>','    <favorite/>')
-			prettyXml = prettyXml.replace('<region>','    <region>')
-			prettyXml = prettyXml.replace('<region/>','    <region/>')
-			prettyXml = prettyXml.replace('<emulator>','    <emulator>')
-			prettyXml = prettyXml.replace('<emulator/>','    <emulator/>')
-			prettyXml = prettyXml.replace('<emulators>','    <emulators>')
-			prettyXml = prettyXml.replace('<emulators/>','    <emulators/>')
-			prettyXml = prettyXml.replace('<cores>','    <cores>')
-			prettyXml = prettyXml.replace('<cores/>','    <cores/>')
-			prettyXml = prettyXml.replace('<core>','    <core>')
-			prettyXml = prettyXml.replace('<core/>','    <core/>')
-			prettyXml = prettyXml.replace('<ratio>','    <ratio>')
-			prettyXml = prettyXml.replace('<ratio/>','    <ratio/>')
-			prettyXml = prettyXml.replace('<thumbnail>','    <thumbnail>')
-			prettyXml = prettyXml.replace('<thumbnail/>','    <thumbnail/>')
-			prettyXml = prettyXml.replace('<romtype>','    <romtype>')
-			prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
-			prettyXml = prettyXml.replace('<hash>','    <hash>')
-			prettyXml = prettyXml.replace('<hash/>','    <hash/>')
+			
+			for TagXML in self.getGameXMLAttributeName():
+				prettyXml = prettyXml.replace('<'+TagXML+'>','    <'+TagXML+'>')
+				prettyXml = prettyXml.replace('<'+TagXML+'/>','    <'+TagXML+'/>')
+			
+			#prettyXml = prettyXml.replace('<name>','    <name>')
+			#prettyXml = prettyXml.replace('<desc>','    <desc>')
+			#prettyXml = prettyXml.replace('<desc/>','    <desc/>')
+			#prettyXml = prettyXml.replace('<path>','    <path>')
+			#prettyXml = prettyXml.replace('<image>','    <image>')
+			#prettyXml = prettyXml.replace('<rating>','    <rating>')
+			#prettyXml = prettyXml.replace('<rating/>','    <rating/>')
+			#prettyXml = prettyXml.replace('<releasedate>','    <releasedate>')
+			#prettyXml = prettyXml.replace('<releasedate/>','    <releasedate/>')
+			#prettyXml = prettyXml.replace('<developer>','    <developer>')
+			#prettyXml = prettyXml.replace('<developer/>','    <developer/>')
+			#prettyXml = prettyXml.replace('<publisher>','    <publisher>')
+			#prettyXml = prettyXml.replace('<publisher/>','    <publisher/>')
+			#prettyXml = prettyXml.replace('<genre>','    <genre>')
+			#prettyXml = prettyXml.replace('<genre/>','    <genre/>')
+			#prettyXml = prettyXml.replace('<players>','    <players>')
+			#prettyXml = prettyXml.replace('<players/>','    <players/>')
+			#prettyXml = prettyXml.replace('<playcount>','    <playcount>')
+			#prettyXml = prettyXml.replace('<playcount/>','    <playcount/>')
+			#prettyXml = prettyXml.replace('<lastplayed>','    <lastplayed>')
+			#prettyXml = prettyXml.replace('<lastplayed/>','    <lastplayed/>')
+			#prettyXml = prettyXml.replace('<hidden>','    <hidden>')
+			#prettyXml = prettyXml.replace('<hidden/>','    <hidden/>')
+			#prettyXml = prettyXml.replace('<background>','    <background>')
+			#prettyXml = prettyXml.replace('<background/>','    <background/>')
+			#prettyXml = prettyXml.replace('<screenshot>','    <screenshot>')
+			#prettyXml = prettyXml.replace('<screenshot/>','    <screenshot/>')
+			#prettyXml = prettyXml.replace('<logo>','    <logo>')
+			#prettyXml = prettyXml.replace('<logo/>','    <logo/>')
+			#prettyXml = prettyXml.replace('<textcolor>','    <textcolor>')
+			#prettyXml = prettyXml.replace('<textcolor/>','    <textcolor/>')
+			#prettyXml = prettyXml.replace('<favorite>','    <favorite>')
+			#prettyXml = prettyXml.replace('<favorite/>','    <favorite/>')
+			#prettyXml = prettyXml.replace('<region>','    <region>')
+			#prettyXml = prettyXml.replace('<region/>','    <region/>')
+			#prettyXml = prettyXml.replace('<emulator>','    <emulator>')
+			#prettyXml = prettyXml.replace('<emulator/>','    <emulator/>')
+			#prettyXml = prettyXml.replace('<emulators>','    <emulators>')
+			#prettyXml = prettyXml.replace('<emulators/>','    <emulators/>')
+			#prettyXml = prettyXml.replace('<cores>','    <cores>')
+			#prettyXml = prettyXml.replace('<cores/>','    <cores/>')
+			#prettyXml = prettyXml.replace('<core>','    <core>')
+			#prettyXml = prettyXml.replace('<core/>','    <core/>')
+			#prettyXml = prettyXml.replace('<ratio>','    <ratio>')
+			#prettyXml = prettyXml.replace('<ratio/>','    <ratio/>')
+			#prettyXml = prettyXml.replace('<thumbnail>','    <thumbnail>')
+			#prettyXml = prettyXml.replace('<thumbnail/>','    <thumbnail/>')
+			#prettyXml = prettyXml.replace('<romtype>','    <romtype>')
+			#prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
+			#prettyXml = prettyXml.replace('<hash>','    <hash>')
+			#prettyXml = prettyXml.replace('<hash/>','    <hash/>')
 			
 			#Ecriture sur disque
 			f = open(fullpathname,'w')
@@ -580,15 +599,15 @@ class GamesList:
 			f.close()
 	
 	
-	def sort(self,tri1='name',tri2='name'):
+	def sort(self,sortkey1='name',sortkey2='name',descending=False):
 		"""Tri des noeuds XML selon deux clés"""
 		gamesList_sorted = GamesList()
 		gamesList_sorted.create_root_xml()
 		
-		for folder_sorted in sorted(self.get_folders(),key=attrgetter(tri1,tri2)):
+		for folder_sorted in sorted(self.get_folders(),key=attrgetter(sortkey1,sortkey2),reverse=descending):
 			gamesList_sorted.add_folder(folder_sorted)
 	
-		for game_sorted in sorted(self.get_games(),key=attrgetter(tri1,tri2)):
+		for game_sorted in sorted(self.get_games(),key=attrgetter(sortkey1,sortkey2),reverse=descending):
 			gamesList_sorted.add_game(game_sorted)
 			
 		return gamesList_sorted

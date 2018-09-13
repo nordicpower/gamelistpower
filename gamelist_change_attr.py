@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                          --- CHANGE ATTRIBUT -----                           #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.07 09/09/2018-09/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.08 09/09/2018-11/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -22,7 +22,8 @@ from glplib import *
 ARG_MODE='mode'
 ARG_MODE_COPY_REGION_FROM_PATH='copy_region_from_path'
 ARG_MODE_COPY_EMPTY_REGION_FROM_PATH='copy_empty_region_from_path'
-ARG_FILE='file'
+ARG_FILE='file'*
+ARG_OVERWRITE='--overwrite'
 
 #DICTIONNAIRE--------------------------------------------------------------------
 dico_region = {}
@@ -34,13 +35,14 @@ dico_region["France"]="FRANCE"
 dico_region["World"]="WORLD"
 dico_region["Japan,Europe"]="JAPON, EUROPE"
 dico_region["Japan,Korea"]="JAPON, COREE"
-dico_region["Russe"]="RUSSE"
+dico_region["Russie"]="RUSSIE"
 
 #---------------------------------------------------------------------------------------------------
 def get_args():
 	parser = argparse.ArgumentParser(description='change attribut of gamelist.xml',epilog='(C) NORDIC POWER')
 	parser.add_argument(ARG_MODE,choices=[ARG_MODE_COPY_REGION_FROM_PATH,ARG_MODE_COPY_EMPTY_REGION_FROM_PATH], default=ARG_MODE_COPY_REGION_FROM_PATH, help='mode')
 	parser.add_argument(ARG_FILE)
+	parser.add_argument(ARG_OVERWRITE,action="store_true")
 	return parser.parse_args()
 
 #---------------------------------------------------------------------------------------------------
@@ -88,7 +90,9 @@ def main():
 		
 	if bChanged:
 		print 'Saving'
-		newfilemame = args.file.replace('.xml','_new.xml')
+		newfilemame = args.file.replace('.xml','_sorted.xml')
+		if args.overwrite:
+			newfilemame = args.file
 		gamesList.save_xml_file(newfilemame,True)
 	else:
 		print 'No change !'

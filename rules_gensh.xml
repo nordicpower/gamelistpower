@@ -130,6 +130,9 @@
     	<exclusion>tricktrp.zip</exclusion>
     	<exclusion>Tricky.zip</exclusion>
     	<exclusion>zintrckb.zip</exclusion>
+    	<!--Atari ST-->
+    	<exclusion>Championship Cricket.zip</exclusion>
+    	<exclusion>Cricket Captain.zip</exclusion>
     </exclusions>
     <preserveFavorite>false</preserveFavorite>
   </rule>
@@ -211,6 +214,22 @@
     <searchValue>turrican</searchValue>
     <destination>/recalbox/share/roms/collections/turrican</destination>
     <destinationName>TURRICAN</destinationName>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+  <rule>
+    <name>nebulus1</name>
+    <searchAttribute>name</searchAttribute>
+    <searchValue>nebulus</searchValue>
+    <destination>/recalbox/share/roms/collections/nebulus</destination>
+    <destinationName>NEBULUS</destinationName>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
+  <rule>
+    <name>nebulus2</name>
+    <searchAttribute>genre</searchAttribute>
+    <searchValue>nebulus</searchValue>
+    <destination>/recalbox/share/roms/collections/nebulus</destination>
+    <destinationName>NEBULUS</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
 </rules>
