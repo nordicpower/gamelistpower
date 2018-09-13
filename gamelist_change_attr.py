@@ -22,7 +22,7 @@ from glplib import *
 ARG_MODE='mode'
 ARG_MODE_COPY_REGION_FROM_PATH='copy_region_from_path'
 ARG_MODE_COPY_EMPTY_REGION_FROM_PATH='copy_empty_region_from_path'
-ARG_FILE='file'*
+ARG_FILE='file'
 ARG_OVERWRITE='--overwrite'
 
 #DICTIONNAIRE--------------------------------------------------------------------
@@ -82,7 +82,7 @@ def main():
 					if "("+cle+")" in game.path and game.region=='':
 						if args.mode==ARG_MODE_COPY_EMPTY_REGION_FROM_PATH:
 							print('Add region '+dico_region[cle]+' to '+game.name)
-						else
+						else:
 							print('Update region '+dico_region[cle]+' to '+game.name)
 						game.region=dico_region[cle]
 						gamesList.update_game(game)
