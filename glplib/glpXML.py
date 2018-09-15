@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.08 31/10/2016-11/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.09 31/10/2016-15/09/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -429,16 +429,35 @@ class GamesList:
 	_CLASS_FOLDER_NODENAME="folder"
 	_CLASS_GAMELIST_NODENAME="gameList"
 	
+	
+	def getGameXMLAttributeName_Standard(self):
+		return ['path','name','desc','image','rating','releasedate','developer','publisher','genre','region','players','playcount','lastplayed','hidden','favorite']
+	
+	def getGameXMLAttributeName_Recalbox(self):
+		return ['emulator','emulators','cores','core','ratio','romtype','thumbnail','hash']
+	
+	def getGameXMLAttributeName_Happigc(self):
+		return ['background','screenshot','logo','textcolor']
+	
+	def getGameXMLAttributeName_TextType(self):
+		return ['name','desc','developer','publisher','genre','region']
+	
+	def getGameXMLAttributeName_PathType(self):
+		return ['path','image','thumbnail','background','screenshot','logo']
+	
+	def getGameXMLAttributeName_DateType(self):
+		return ['releasedate','lastplayed']
+	
+	def getGameXMLAttributeName_Default(self):
+		return ['path','name','desc','image','releasedate','developer','publisher','genre','region','players']
+	
 	def getGameXMLAttributeName(self):
-		standard = ['path','name','desc','image','rating','releasedate','developer','publisher','genre','region','players','playcount','lastplayed','hidden','favorite']
-		recalbox = ['emulator','emulators','cores','core','ratio','romtype','thumbnail','hash']
-		happigc  = ['background','screenshot','logo','textcolor']
-		
-		standard.extend(recalbox)
-		standard.extend(happigc)
+		standard = self.getGameXMLAttributeName_Standard()
+		standard.extend(self.getGameXMLAttributeName_Recalbox())
+		standard.extend(self.getGameXMLAttributeName_Happigc())
 		
 		return standard
-	
+		
 	#property----------------------------------------------------------------	
 	@property
 	def modified(self):return self._last_updated_date!=''
@@ -522,68 +541,16 @@ class GamesList:
 				t = xx.strip()
 				if len(t) >0:
 					prettyXml = prettyXml + t + '\n'
+			
 			#Identation a la mano
 			prettyXml = prettyXml.replace('<game','  <game')
 			prettyXml = prettyXml.replace('  <gameList>','<gameList>') #Patch 0.5.06
 			prettyXml = prettyXml.replace('</game>','  </game>')
 			prettyXml = prettyXml.replace('<folder','  <folder')
 			prettyXml = prettyXml.replace('</folder>','  </folder>')
-			
 			for TagXML in self.getGameXMLAttributeName():
 				prettyXml = prettyXml.replace('<'+TagXML+'>','    <'+TagXML+'>')
 				prettyXml = prettyXml.replace('<'+TagXML+'/>','    <'+TagXML+'/>')
-			
-			#prettyXml = prettyXml.replace('<name>','    <name>')
-			#prettyXml = prettyXml.replace('<desc>','    <desc>')
-			#prettyXml = prettyXml.replace('<desc/>','    <desc/>')
-			#prettyXml = prettyXml.replace('<path>','    <path>')
-			#prettyXml = prettyXml.replace('<image>','    <image>')
-			#prettyXml = prettyXml.replace('<rating>','    <rating>')
-			#prettyXml = prettyXml.replace('<rating/>','    <rating/>')
-			#prettyXml = prettyXml.replace('<releasedate>','    <releasedate>')
-			#prettyXml = prettyXml.replace('<releasedate/>','    <releasedate/>')
-			#prettyXml = prettyXml.replace('<developer>','    <developer>')
-			#prettyXml = prettyXml.replace('<developer/>','    <developer/>')
-			#prettyXml = prettyXml.replace('<publisher>','    <publisher>')
-			#prettyXml = prettyXml.replace('<publisher/>','    <publisher/>')
-			#prettyXml = prettyXml.replace('<genre>','    <genre>')
-			#prettyXml = prettyXml.replace('<genre/>','    <genre/>')
-			#prettyXml = prettyXml.replace('<players>','    <players>')
-			#prettyXml = prettyXml.replace('<players/>','    <players/>')
-			#prettyXml = prettyXml.replace('<playcount>','    <playcount>')
-			#prettyXml = prettyXml.replace('<playcount/>','    <playcount/>')
-			#prettyXml = prettyXml.replace('<lastplayed>','    <lastplayed>')
-			#prettyXml = prettyXml.replace('<lastplayed/>','    <lastplayed/>')
-			#prettyXml = prettyXml.replace('<hidden>','    <hidden>')
-			#prettyXml = prettyXml.replace('<hidden/>','    <hidden/>')
-			#prettyXml = prettyXml.replace('<background>','    <background>')
-			#prettyXml = prettyXml.replace('<background/>','    <background/>')
-			#prettyXml = prettyXml.replace('<screenshot>','    <screenshot>')
-			#prettyXml = prettyXml.replace('<screenshot/>','    <screenshot/>')
-			#prettyXml = prettyXml.replace('<logo>','    <logo>')
-			#prettyXml = prettyXml.replace('<logo/>','    <logo/>')
-			#prettyXml = prettyXml.replace('<textcolor>','    <textcolor>')
-			#prettyXml = prettyXml.replace('<textcolor/>','    <textcolor/>')
-			#prettyXml = prettyXml.replace('<favorite>','    <favorite>')
-			#prettyXml = prettyXml.replace('<favorite/>','    <favorite/>')
-			#prettyXml = prettyXml.replace('<region>','    <region>')
-			#prettyXml = prettyXml.replace('<region/>','    <region/>')
-			#prettyXml = prettyXml.replace('<emulator>','    <emulator>')
-			#prettyXml = prettyXml.replace('<emulator/>','    <emulator/>')
-			#prettyXml = prettyXml.replace('<emulators>','    <emulators>')
-			#prettyXml = prettyXml.replace('<emulators/>','    <emulators/>')
-			#prettyXml = prettyXml.replace('<cores>','    <cores>')
-			#prettyXml = prettyXml.replace('<cores/>','    <cores/>')
-			#prettyXml = prettyXml.replace('<core>','    <core>')
-			#prettyXml = prettyXml.replace('<core/>','    <core/>')
-			#prettyXml = prettyXml.replace('<ratio>','    <ratio>')
-			#prettyXml = prettyXml.replace('<ratio/>','    <ratio/>')
-			#prettyXml = prettyXml.replace('<thumbnail>','    <thumbnail>')
-			#prettyXml = prettyXml.replace('<thumbnail/>','    <thumbnail/>')
-			#prettyXml = prettyXml.replace('<romtype>','    <romtype>')
-			#prettyXml = prettyXml.replace('<romtype/>','    <romtype/>')
-			#prettyXml = prettyXml.replace('<hash>','    <hash>')
-			#prettyXml = prettyXml.replace('<hash/>','    <hash/>')
 			
 			#Ecriture sur disque
 			f = open(fullpathname,'w')
@@ -651,18 +618,24 @@ class GamesList:
 			logger.warn(msg_local.get(('MSG_ERROR_GLX_EXCEPTION',config.language)).format('GamesList.__get_sub_element_value',type(exception).__name__))
 		return ''
 	
-	def __set_sub_element_value(self,nodegame,elementname,value):
+	def __set_sub_element_value(self,nodegame,elementname,value,deleteEmptyTag=True):
 		"""write value of element"""
 		try:
 			if value=='':
 				nodegame.removeChild(nodegame.getElementsByTagName(elementname)[0])
+				
+				if not deleteEmptyTag and elementname in self.getGameXMLAttributeName_Default():
+					self.__add_subelement_node(nodegame,elementname,value)
 				
 			else:
 				nodegame.getElementsByTagName(elementname)[0].firstChild.nodeValue=value
 
 		except (AttributeError,IndexError):
 			if value !='':
-					self.__add_subelement_node(nodegame,elementname,value)
+				self.__add_subelement_node(nodegame,elementname,value)
+			elif not deleteEmptyTag and elementname in self.getGameXMLAttributeName_Default():
+				self.__add_subelement_node(nodegame,elementname,value)
+			
 		except Exception as exception:
 			#logger.warn('__get_sub_element_value :' +type(exception).__name__)
 			logger.warn(msg_local.get(('MSG_ERROR_GLX_EXCEPTION',config.language)).format('GamesList.__set_sub_element_value',type(exception).__name__))
@@ -920,7 +893,7 @@ class GamesList:
 		self.__tag_update()
 
 			
-	def update_game(self,updgame):
+	def update_game(self,updgame,deleteEmptyTag=True):
 		"""update existing game node in dom"""
 		tagpath = self._gameListXmlDom.getElementsByTagName("path")
 		for element in tagpath:
@@ -941,31 +914,31 @@ class GamesList:
 				else:
 					game_node.setAttribute("internal_glp_id",updgame.internal_glp_id)
 				#SubElements	
-				self.__set_sub_element_value(game_node,"path",updgame.path)
-				self.__set_sub_element_value(game_node,"name",updgame.name)
-				self.__set_sub_element_value(game_node,"desc",updgame.desc)
-				self.__set_sub_element_value(game_node,"image",updgame.image)
-				self.__set_sub_element_value(game_node,"rating",updgame.rating)
-				self.__set_sub_element_value(game_node,"releasedate",updgame.releasedate)
-				self.__set_sub_element_value(game_node,"developer",updgame.developer)
-				self.__set_sub_element_value(game_node,"publisher",updgame.publisher)
-				self.__set_sub_element_value(game_node,"genre",updgame.genre)
-				self.__set_sub_element_value(game_node,"players",updgame.players)
-				self.__set_sub_element_value(game_node,"playcount",updgame.playcount)
-				self.__set_sub_element_value(game_node,"lastplayed",updgame.lastplayed)
-				self.__set_sub_element_value(game_node,"hidden",updgame.hidden)
-				self.__set_sub_element_value(game_node,"background",updgame.background)
-				self.__set_sub_element_value(game_node,"screenshot",updgame.screenshot)
-				self.__set_sub_element_value(game_node,"logo",updgame.logo)
-				self.__set_sub_element_value(game_node,"textcolor",updgame.textcolor)
-				self.__set_sub_element_value(game_node,"favorite",updgame.favorite)
-				self.__set_sub_element_value(game_node,"region",updgame.region)
-				self.__set_sub_element_value(game_node,"emulator",updgame.emulator)
-				self.__set_sub_element_value(game_node,"core",updgame.core)
-				self.__set_sub_element_value(game_node,"ratio",updgame.ratio)
-				self.__set_sub_element_value(game_node,"thumbnail",updgame.thumbnail)
-				self.__set_sub_element_value(game_node,"romtype",updgame.romtype)
-				self.__set_sub_element_value(game_node,"hash",updgame.hashtag)
+				self.__set_sub_element_value(game_node,"path",updgame.path,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"name",updgame.name,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"desc",updgame.desc,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"image",updgame.image,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"rating",updgame.rating,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"releasedate",updgame.releasedate,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"developer",updgame.developer,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"publisher",updgame.publisher,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"genre",updgame.genre,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"players",updgame.players,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"playcount",updgame.playcount,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"lastplayed",updgame.lastplayed,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"hidden",updgame.hidden,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"background",updgame.background,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"screenshot",updgame.screenshot,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"logo",updgame.logo,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"textcolor",updgame.textcolor,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"favorite",updgame.favorite,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"region",updgame.region,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"emulator",updgame.emulator,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"core",updgame.core,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"ratio",updgame.ratio,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"thumbnail",updgame.thumbnail,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"romtype",updgame.romtype,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"hash",updgame.hashtag,deleteEmptyTag)
 				self.__tag_update()
 
 	

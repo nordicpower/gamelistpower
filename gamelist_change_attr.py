@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                          --- CHANGE ATTRIBUT -----                           #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.08 09/09/2018-11/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.09 09/09/2018-15/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -22,10 +22,17 @@ from glplib import *
 ARG_MODE='mode'
 ARG_MODE_COPY_REGION_FROM_PATH='copy_region_from_path'
 ARG_MODE_COPY_EMPTY_REGION_FROM_PATH='copy_empty_region_from_path'
+ARG_MODE_UPPER='upper'
+ARG_MODE_UPPER_ALL='upper_all'
+ARG_MODE_REMOVE='remove'
+ARG_MODE_REMOVE_PLAYINFO='remove_playinfo'
+ARG_MODE_ADD_EMPTY_TAG='add_emptytag'
+ARG_MODE_REMOVE_EMPTY_TAG='remove_emptytag'
 ARG_FILE='file'
 ARG_OVERWRITE='--overwrite'
+ARG_ATTR='--attribute'
 
-#DICTIONNAIRE--------------------------------------------------------------------
+#DICTIONNAIRES-------------------------------------------------------------------
 dico_region = {}
 dico_region["Europe"]="EUROPE"
 dico_region["USA"]="USA"
@@ -37,13 +44,28 @@ dico_region["Japan,Europe"]="JAPON, EUROPE"
 dico_region["Japan,Korea"]="JAPON, COREE"
 dico_region["Russie"]="RUSSIE"
 
-#---------------------------------------------------------------------------------------------------
+dico_upper = {}
+dico_upper["&AMP;"]="&amp;"
+
+#-------------------------------------------------------------------------------
 def get_args():
 	parser = argparse.ArgumentParser(description='change attribut of gamelist.xml',epilog='(C) NORDIC POWER')
-	parser.add_argument(ARG_MODE,choices=[ARG_MODE_COPY_REGION_FROM_PATH,ARG_MODE_COPY_EMPTY_REGION_FROM_PATH], default=ARG_MODE_COPY_REGION_FROM_PATH, help='mode')
+	parser.add_argument(ARG_MODE,choices=[ARG_MODE_COPY_REGION_FROM_PATH,ARG_MODE_COPY_EMPTY_REGION_FROM_PATH,
+		ARG_MODE_UPPER,ARG_MODE_UPPER_ALL,ARG_MODE_REMOVE,ARG_MODE_REMOVE_PLAYINFO,ARG_MODE_ADD_EMPTY_TAG,
+		ARG_MODE_REMOVE_EMPTY_TAG], default=ARG_MODE_COPY_REGION_FROM_PATH, help='mode')
 	parser.add_argument(ARG_FILE)
 	parser.add_argument(ARG_OVERWRITE,action="store_true")
+	parser.add_argument(ARG_ATTR)
 	return parser.parse_args()
+
+def upper_html(input_string):
+
+	input_string=input_string.upper()
+	
+	for keyUpper in dico_upper.keys():
+		input_string.replace(keyUpper,dico_upper[keyUpper])
+	
+	return input_string
 
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------- MAIN -----------------------------------------------------
@@ -61,8 +83,17 @@ def main():
 	#Lecture Configuration
 	config.load_from_file()
 	
+	#Argument
+	if args.attribute==None:
+		args.attribute='name'
+	if args.mode in [ARG_MODE_UPPER] and args.attribute not in GamesList().getGameXMLAttributeName():
+		print('attribute '+args.attribute+' not supported !')
+		sys.exit(1)
+	if args.attribute=='hash':
+		args.attribute='hashtag'
+	
 	if os.path.getsize(args.file)==0:
-		print('file not existing !')
+		print('File not existing !')
 		sys.exit(1)
 	
 	#Chargement du fichier
@@ -71,7 +102,7 @@ def main():
 		gamesList.import_xml_file(args.file)
 	except MyError:
 		#cas fichier gamelist.xml mal formé, on passe au dossier de roms suivant
-		print 'error while loading file !'
+		print 'Error while loading file !'
 		sys.exit(1)
 	
 	bChanged=False
@@ -88,9 +119,45 @@ def main():
 						gamesList.update_game(game)
 						bChanged=True
 		
+	if args.mode in [ARG_MODE_UPPER]:
+		for game in gamesList.get_games():
+			game.__dict__[args.attribute]=upper_html(game.__dict__[args.attribute])
+			gamesList.update_game(game)
+		bChanged=True
+	
+	if args.mode in [ARG_MODE_UPPER_ALL]:
+		for game in gamesList.get_games():
+			for xml_attr in gamesList.getGameXMLAttributeNameAutorizedForUpper():
+				game.__dict__[xml_attr]=upper_html(game.__dict__[xml_attr])
+			gamesList.update_game(game)
+		bChanged=True
+	
+	if args.mode in [ARG_MODE_REMOVE]:
+		for game in gamesList.get_games():
+			game.__dict__[args.attribute]=""
+			gamesList.update_game(game)
+		bChanged=True
+	
+	if args.mode in [ARG_MODE_REMOVE_PLAYINFO]:
+		for game in gamesList.get_games():
+			for xml_attr in gamesList.getGameXMLAttributeName_TextType():
+				game.playcount=""
+				game.lastplayed=""
+			gamesList.update_game(game)
+		bChanged=True
+	
+	if args.mode in [ARG_MODE_ADD_EMPTY_TAG]:
+		for game in gamesList.get_games():
+			gamesList.update_game(game,False)
+		bChanged=True
+		
+	if args.mode in [ARG_MODE_REMOVE_EMPTY_TAG]:
+		for game in gamesList.get_games():
+			gamesList.update_game(game)
+		bChanged=True
+	
 	if bChanged:
-		print 'Saving'
-		newfilemame = args.file.replace('.xml','_sorted.xml')
+		newfilemame = args.file.replace('.xml','_new.xml')
 		if args.overwrite:
 			newfilemame = args.file
 		gamesList.save_xml_file(newfilemame,True)
