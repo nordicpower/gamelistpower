@@ -127,7 +127,7 @@ def main():
 	
 	if args.mode in [ARG_MODE_UPPER_ALL]:
 		for game in gamesList.get_games():
-			for xml_attr in gamesList.getGameXMLAttributeNameAutorizedForUpper():
+			for xml_attr in gamesList.getGameXMLAttributeName_TextType():
 				game.__dict__[xml_attr]=upper_html(game.__dict__[xml_attr])
 			gamesList.update_game(game)
 		bChanged=True
