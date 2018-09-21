@@ -97,6 +97,7 @@ Il sera nécessaire de relancer RecalBox pour prendre en compte les nouvelles ro
 
 ## Scripts complémentaires python (appel via SSH uniquement)
 - gamelist_change_attr.py : permet de modifier automatiquement de valeurs d'attribut (extraire la region du nom du fichier)
+- gamelist_diff.py : comparaison de deux fichiers xml afin d'identifier les jeux présents dans un fichier et pas un autre
 - gamelist_check.py: permet de tester le chargement d'un fichier en python
 - gamelist_merge.py: permet de fusionner deux fichiers XLM 
 - gamelist_sort.py : permet de trier les entrées XML selon un attribut
