@@ -229,7 +229,7 @@ class Game:
 	def romtype(self,v):self._romtype=v
 	@hashtag.setter
 	def hashtag(self,v):self._hashtag=v
-		
+			
 	def get_filename_rom(self):
 		"""Extraction du nom de fichiers dans un path"""
 		return self.path.replace('\\','/').split('/')[-1]
@@ -689,7 +689,7 @@ class GamesList:
 					else:
 						raise MyError('Unknow node')
 		return nodes_found
-		
+
 		
 	def __get_nodes_by_type(self,node_type):
 		"""search node elements by their node_type return list objet """
@@ -783,6 +783,7 @@ class GamesList:
 
 	def search_games(self,search_attr,search_value):
 		"""return games which matches critera"""
+		#print (search_attr,search_value)
 		return self.__search_nodes_by_attr(self._CLASS_GAME_NODENAME,search_attr,search_value)
 		
 			
