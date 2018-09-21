@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                          --- CHANGE ATTRIBUT -----                           #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.09 09/09/2018-15/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.09 09/09/2018-20/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -34,15 +34,24 @@ ARG_ATTR='--attribute'
 
 #DICTIONNAIRES-------------------------------------------------------------------
 dico_region = {}
-dico_region["Europe"]="EUROPE"
+##Plus récurrents
 dico_region["USA"]="USA"
-dico_region["Japan"]="JAPON"
-dico_region["USA, Europe"]="USA, EUROPE"
+dico_region["Europe"]="EUROPE"
 dico_region["France"]="FRANCE"
+dico_region["Japan"]="JAPON"
 dico_region["World"]="WORLD"
+dico_region["USA, Europe"]="USA, EUROPE"
+##Moins récurrents
+dico_region["Australia"]="AUSTRALIE"
+dico_region["Brazil"]="BRESIL"
 dico_region["Japan,Europe"]="JAPON, EUROPE"
 dico_region["Japan,Korea"]="JAPON, COREE"
+dico_region["Korea"]="COREE"
 dico_region["Russie"]="RUSSIE"
+dico_region["Taiwan"]="TAIWAN"
+dico_region["USA, Australia"]="USA, AUSTRALIE"
+dico_region["USA, Korea"]="USA, COREE"
+
 
 dico_upper = {}
 dico_upper["&AMP;"]="&amp;"
