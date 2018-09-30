@@ -30,6 +30,7 @@ Le dossier Street-Fighter (Recalbox 18.04.20)
 `wget https://github.com/nordicpower/gamelistpower/archive/master.tar.gz`<br />
 `tar xzvf master.tar.gz`<br />
 `cp -r /recalbox/share/gamelistpower-master /recalbox/scripts/gamelistpower`<br />
+`rm -r /recalbox/share/gamelistpower-master`<br />
 `cd /recalbox/scripts/gamelistpower`<br />
 `chmod 777 *.sh`<br />
 `./install.sh`<br />
