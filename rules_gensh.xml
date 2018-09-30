@@ -122,7 +122,6 @@
     	<exclusion>Rick to Mick no Daibouken.rom</exclusion>
     	<exclusion>SSX Tricky.zip</exclusion>
     	<exclusion>SSX Tricky (USA, Europe) (En,Fr,De).zip</exclusion>
-    	<exclusion>Super International Cricket (Europe).zip</exclusion>
     	<exclusion>Tetrix II (1994)(Hawkeye Soft)[cr Extreme].adf</exclusion>
     	<exclusion>trckydoc.zip</exclusion>
     	<exclusion>Trick Boarder (USA).zip</exclusion>
@@ -130,9 +129,10 @@
     	<exclusion>tricktrp.zip</exclusion>
     	<exclusion>Tricky.zip</exclusion>
     	<exclusion>zintrckb.zip</exclusion>
-    	<!--Atari ST-->
-    	<exclusion>Championship Cricket.zip</exclusion>
-    	<exclusion>Cricket Captain.zip</exclusion>
+    	<!--Atari ST/MEGADRIVE-->
+    	<exclusion>cricket</exclusion>
+    	<!--Atari MSX1-->
+    	<exclusion>Trick Boy</exclusion>
     </exclusions>
     <preserveFavorite>false</preserveFavorite>
   </rule>
