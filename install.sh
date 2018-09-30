@@ -5,27 +5,23 @@
 #------------------------------------------------------------------------------#
 # Installation de la plateforme collections                                    #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.04 04/06/2018-15/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.10 04/06/2018-30/09/2018 #
 ################################################################################
 
 #INIT
 PATH_DEST_ES_SYSTEMS=/recalbox/share_init/system/.emulationstation/es_systems.cfg
-PATH_ROMS_COLLECTIONS=/recalbox/share/roms/collections
-PATH_SRC_IMAGES=./ressources/collections
 PATH_SRC_ES_SYSTEMS=./ressources/collections/es_systems.cfg
+PATH_ROMS_COLLECTIONS=/recalbox/share/roms/collections
+PATH_SRC_COLLECTION=./ressources/collections
+PATH_ROMS_LINUXTOOLS=/recalbox/share/roms/linuxtools
+PATH_SRC_FAVORI=./ressources/favori
 
 mount -o remount,rw /
 
 echo "Deploiement de la plateforme Collections"
 
 ################################################################################
-#PARAMETRAGE FICHIERS RECALBOX
-#cp gamelistpower.ini.RECALBOX gamelistpower.ini
-#cp rules_gensh.xml.RECALBOX rules_gensh.xml
-#cp rules_romcpy.xml.RECALBOX rules_romcpy.xml
-
-################################################################################
-#PREPARATION DU DOSSIER
+#PREPARATION DU DOSSIER COLLECTION
 echo "Gestion des dossiers"
 
 if [ ! -d $PATH_ROMS_COLLECTIONS ];then
@@ -41,28 +37,42 @@ if [ ! -d $PATH_ROMS_COLLECTIONS/images ];then
 	echo "Creation du dossier $PATH_ROMS_COLLECTIONS/images"
 fi
 
-if [ -d $PATH_SRC_IMAGES ];then
-	cp $PATH_SRC_IMAGES/*.png $PATH_ROMS_COLLECTIONS/images
-	chmod 777 $PATH_SRC_IMAGES/*.sh
-	cp $PATH_SRC_IMAGES/*.sh $PATH_ROMS_COLLECTIONS
-	cp $PATH_SRC_IMAGES/*.txt $PATH_ROMS_COLLECTIONS
+if [ -d $PATH_SRC_COLLECTION ];then
+	cp $PATH_SRC_COLLECTION/*.png $PATH_ROMS_COLLECTIONS/images
+	chmod 777 "$PATH_SRC_COLLECTION/Z*.sh"
+	cp "$PATH_SRC_COLLECTION/Z*.sh" $PATH_ROMS_COLLECTIONS
+	cp $PATH_SRC_COLLECTION/*.txt $PATH_ROMS_COLLECTIONS
 	echo "Copie des ressouces images, txt et sh"
-	
 fi
 
-################################################################################
-#AJOUT DE LA PLATEFORME
-echo "Gestion de la plateforme sous Emulation Station"
 
+################################################################################
+#PREPARATION DU DOSSIER LINUXTOOLS POUR LANCER FAVORI / COLLECTION
+if [ -d $PATH_ROMS_LINUXTOOLS ];then
+	#COLLECTION
+	chmod 777 "$PATH_SRC_COLLECTION/C*.sh"
+	cp "$PATH_SRC_COLLECTION/C*.sh" $PATH_ROMS_LINUXTOOLS
+	
+	#FAVORI
+	chmod 777 $PATH_SRC_FAVORI/*.sh
+	cp $PATH_SRC_FAVORI/*.sh $PATH_ROMS_LINUXTOOLS
+	cp $PATH_SRC_FAVORI/*.jpg $PATH_ROMS_LINUXTOOLS/images
+fi
+
+
+################################################################################
+#AJOUT DE LA PLATEFORME COLLECTION
+echo "Ajout de la plateforme COLLECTION sous Emulation Station"
 python system.py merge -f $PATH_SRC_ES_SYSTEMS
 
 
 ################################################################################
-#LANCEMENT DE LA MISE A JOUR
-echo "Lancement de la generation"
-
+#LANCEMENT DE LA MISE A JOUR COLLECTION
+echo "Lancement de la generation des lanceurs COLLECTION"
 python gamelistpower.py generate_sh info
+
 
 ################################################################################
 echo "Fin"
 echo "Merci de rebooter pour prendre en compte la nouvelle plateforme"
+

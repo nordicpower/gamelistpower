@@ -40,5 +40,6 @@ Create Tagfile=0
 28=gamelist_merge.py
 29=gamelist_sort.py
 30=gamelist_change_attr.py
+31=gamelist_favori.py
 [Backup]
 LastComment=

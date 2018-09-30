@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.09 31/10/2016-15/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.10 31/10/2016-26/10/2018 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -865,7 +865,7 @@ class GamesList:
 		if newgame.lastplayed!='':
 			self.__add_subelement_node(newdom_game_element,"lastplayed",newgame.lastplayed)
 		if newgame.hidden!='':
-			self.__add_subelement_node(newdom_game_element,"hidden",newgame.lastplayed)
+			self.__add_subelement_node(newdom_game_element,"hidden",newgame.hidden)
 		if newgame.background!='':
 			self.__add_subelement_node(newdom_game_element,"background",newgame.background)
 		if newgame.screenshot!='':
@@ -1092,3 +1092,415 @@ class GamesList:
 					self.__tag_update()
 
 
+
+
+#CLASS-GAME-EXPORT---------------------------------------------------------------
+class GameExport:
+	
+	def __init__(self,**kwargs):
+		self._plateform=''
+		self._plateformPath=''
+		self._path=''
+		self._name=''
+		self._hashtag="" 		#RecalBox 18.06.27
+		self._favorite=""
+		self._playcount=''
+		self._lastplayed=''
+		self._hidden=''
+		self._specific=''
+				
+		if kwargs is not None:
+			#mise à jour paramètre(s) nommé(s)
+			self.__dict__.update(kwargs)
+
+	def __repr__(self):
+        	return repr((self.name, self.path, self.favorite, self.playcount, self.lastplayed, self.hidden))
+
+	#property-------------------------
+	@property
+	def plateform(self):return self._plateform
+	@property
+	def plateformPath(self):return self._plateformPath
+	@property
+	def path(self):return self._path
+	@property
+	def name(self):return self._name
+	@property
+	def hashtag(self):return self._hashtag
+	@property
+	def favorite(self):return self._favorite
+	@property
+	def hidden(self):return self._hidden		
+	@property
+	def playcount(self):return self._playcount
+	@property
+	def lastplayed(self):return self._lastplayed
+	@property
+	def specific(self):return self._specific
+	
+	#setter-------------------------	
+	@plateform.setter
+	def plateform(self,v):self._plateform=v
+	@plateformPath.setter
+	def plateformPath(self,v):self._plateformPath=v
+	@path.setter
+	def path(self,v):self._path=v
+	@name.setter
+	def name(self,v):self._name=v
+	@hashtag.setter
+	def hashtag(self,v):self._hashtag=v
+	@favorite.setter
+	def favorite(self,v):self._favorite=v
+	@hidden.setter
+	def hidden(self,v):self._hidden=v
+	@playcount.setter
+	def playcount(self,v):self._playcount=v
+	@lastplayed.setter
+	def lastplayed(self,v):self._lastplayed=v
+	@specific.setter
+	def specific(self,v):self._specific=v
+			
+	def get_filename_rom(self):
+		"""Extraction du nom de fichiers dans un path"""
+		return self.path.replace('\\','/').split('/')[-1]
+		
+		
+	def import_from_game(self,plateform,plateform_path,game_src,addPlayInfo=True,addHidden=True):
+		"""Copie les attributs d'un object game vers GameExport"""		
+		
+		self.plateform = plateform
+		self.plateformPath = plateform_path
+		self.path = game_src.path
+		self.name = game_src.name
+		self.hashtag = game_src.hashtag
+		self.favorite = game_src.favorite
+		if addPlayInfo:
+			self.playcount = game_src.playcount
+			self.lastplayed = game_src.lastplayed
+		if addHidden:
+			self.hidden = game_src.hidden
+		
+	def export_to_game(self,game_dest,addPlayInfo=True,addHidden=True):
+		"""Copie les attributs de l'objet vers un object game"""		
+		
+		game_dest.favorite = self.favorite
+		if addPlayInfo:
+			game_dest.playcount = self.playcount
+			game_dest.lastplayed = self.lastplayed
+		if addHidden:
+			game_dest.hidden = self.hidden
+	
+		return game_dest
+		
+		
+#CLASS-GAMESLIST-EXPORT------------------------------------------------------------------
+class GamesListExport:
+	"""Class Gameslist of gamelist.xml"""
+	_gameListXmlDom = minidom.getDOMImplementation()
+	_last_updated_date=""
+	_empty_file_at_load=False
+	
+	#XML definition----------------------------------------------------------------	
+	_CLASS_GAME_NODENAME_EXPORT="gameExport"
+	_CLASS_GAMELIST_NODENAME_EXPORT="gameListExport"
+			
+	def getGameXMLAttributeName(self):
+		return ['path','name','hash','favorite','playcount','lastplayed','hidden','plateform','plateformPath']
+
+
+	#property----------------------------------------------------------------	
+	@property
+	def modified(self):return self._last_updated_date!=''
+	@property
+	def last_updated_date(self):return self._last_updated_date	
+	@property
+	def empty_file_at_load(self):return self._empty_file_at_load
+
+	#file operations----------------------------------------------------------------	
+	def create_root_xml(self):
+		self._gameListXmlDom = minidom.parseString('<?xml version="1.0" ?><'+self._CLASS_GAMELIST_NODENAME_EXPORT+'></'+self._CLASS_GAMELIST_NODENAME_EXPORT+'>')
+		self._empty_file_at_load = True
+		
+	def import_xml_file(self,fullpathname,bStopIfGeneralError=True):
+		try:
+			self._gameListXmlDom = minidom.parse(fullpathname)
+			self.__load_update_dates()
+			
+		except (expat.ExpatError):
+			if os.path.getsize(fullpathname)==0:
+				logger.warn(msg_local.get(('MSG_WARN_GLX_EMPTYFILE',config.language)).format(fullpathname))
+				self.create_root_xml()
+			elif predict_encoding(fullpathname)=='Windows-1252':
+				with io.open(fullpathname, "r", encoding="cp1252") as my_file:
+					xmltext = my_file.read()
+					self._gameListXmlDom = minidom.parseString(xmltext.encode("utf-8"))
+			else:
+				#Gestion des erreurs sur le format XML (>0.6.04)
+				trace_message = traceback.format_exc(0).split('\n')[1]
+				if 'not well-formed (invalid token)' in trace_message:
+					#Erreur entity xml
+					trace_data = re.findall(r'\d+', trace_message)
+					logger.error(msg_local.get(('MSG_ERROR_XML_LOC',config.language)).format(fullpathname,trace_data[0],trace_data[1]))
+					line_xml_error=open(fullpathname).readlines()[int(trace_data[0])-1]
+					pos_xml_error=line_xml_error[int(trace_data[1])-1]
+					if pos_xml_error=='&':		
+						logger.info(msg_local.get(('MSG_INFO_XML_ADVISE1',config.language)).format('&','&amp;'))
+					elif pos_xml_error=='<':
+						logger.info(msg_local.get(('MSG_INFO_XML_ADVISE1',config.language)).format('<','&lt;'))
+					elif pos_xml_error=='>':
+						logger.info(msg_local.get(('MSG_INFO_XML_ADVISE1',config.language)).format('>','&gt;'))
+					logger.info(msg_local.get(('MSG_INFO_XML_LINE_SOURCE',config.language)).format(line_xml_error))
+				elif 'mismatched tag' in trace_message:
+					#Erreur de balise 
+					trace_data = re.findall(r'\d+', trace_message)
+					logger.error(msg_local.get(('MSG_ERROR_XML_LOC',config.language)).format(fullpathname,trace_data[0],trace_data[1]))
+					line_xml_error=open(fullpathname).readlines()[int(trace_data[0])-1]
+					logger.info(msg_local.get(('MSG_INFO_XML_ADVISE2',config.language)).format(''))
+					logger.info(msg_local.get(('MSG_INFO_XML_LINE_SOURCE',config.language)).format(line_xml_error))
+				else:
+					logger.error(msg_local.get(('MSG_ERROR_GLX_EXCEPTION_FILE',config.language)).format('GamesList.import_xml_file',trace_message,fullpathname))
+					
+				raise MyError('xml malformed')
+				
+		except Exception as exception:
+			logger.critical(msg_local.get(('MSG_ERROR_GLX_EXCEPTION_FILE',config.language)).format('GamesList.import_xml_file',type(exception).__name__,fullpathname))
+			if bStopIfGeneralError:
+				sys.exit(1)
+	
+	def save_xml_file(self,fullpathname,cleaning=True):
+		
+		if cleaning:
+			uglyXml = self._gameListXmlDom.toprettyxml()
+			#Cleaning maison très bourrin !!
+			prettyXml=''
+			x = uglyXml.split('\n')
+			for xx in x:
+				t = xx.strip()
+				if len(t) >0:
+					prettyXml = prettyXml + t + '\n'
+			
+			#Identation a la mano
+			prettyXml = prettyXml.replace('<'+self._CLASS_GAME_NODENAME_EXPORT,'  <'+self._CLASS_GAME_NODENAME_EXPORT)
+			prettyXml = prettyXml.replace('  <'+self._CLASS_GAMELIST_NODENAME_EXPORT+'>','<'+self._CLASS_GAMELIST_NODENAME_EXPORT+'>') #Patch 0.5.06
+			prettyXml = prettyXml.replace('</'+self._CLASS_GAME_NODENAME_EXPORT+'>','  </'+self._CLASS_GAME_NODENAME_EXPORT+'>')
+			for TagXML in self.getGameXMLAttributeName():
+				prettyXml = prettyXml.replace('<'+TagXML+'>','    <'+TagXML+'>')
+				prettyXml = prettyXml.replace('<'+TagXML+'/>','    <'+TagXML+'/>')
+			
+			#Ecriture sur disque
+			f = open(fullpathname,'w')
+			f.write(prettyXml.encode("UTF-8"))
+			f.close()
+			
+		else:
+			#Ecriture sur disque
+			f = open(fullpathname,'w')
+			f = codecs.lookup("utf-8")[3](f)
+			self._gameListXmlDom.writexml(f, encoding="utf-8")
+			f.close()
+	
+	
+	def sort(self,sortkey1='name',sortkey2='name',descending=False):
+		"""Tri des noeuds XML selon deux clés"""
+		gamesList_sorted = GamesListExport()
+		gamesList_sorted.create_root_xml()
+		
+		for game_sorted in sorted(self.get_games(),key=attrgetter(sortkey1,sortkey2),reverse=descending):
+			gamesList_sorted.add_game(game_sorted)
+			
+		return gamesList_sorted
+		
+	
+	#debug----------------------------------------------------------------	
+	def to_xml(self):
+		return self._gameListXmlDom.toxml() 
+
+	#private functions----------------------------------------------------------------	
+	def __tag_update(self):
+		"""set modified and update date, quick reserved for quickupdate"""
+		self._modified=True
+		self._last_updated_date=time.strftime('%Y%m%dT%H%M%S',time.localtime())
+		gamelist_element = self._gameListXmlDom.getElementsByTagName(self._CLASS_GAMELIST_NODENAME_EXPORT)
+		gamelist_element[0].setAttribute("last_update_date",self._last_updated_date)
+		gamelist_element[0].setAttribute("source",SOURCE_NAME)
+	
+	
+	def __load_update_dates(self):
+		""" retrieve date from gamelist node"""
+		gamelist_element = self._gameListXmlDom.getElementsByTagName(self._CLASS_GAMELIST_NODENAME_EXPORT)
+		self._last_updated_date = gamelist_element[0].getAttribute("last_update_date")
+		logger.debug(msg_local.get(('MSG_DEBUG_GLX_UPD_DATE',config.language)).format(self._last_updated_date,self._last_updated_date,self._last_updated_date))
+		
+	def __get_sub_element_value(self,nodegame,elementname):
+		"""read value of element return empty if not exist"""
+		try:
+			return nodegame.getElementsByTagName(elementname)[0].firstChild.nodeValue
+		except (AttributeError,IndexError):
+			pass
+		except Exception as exception:
+			#logger.warn('__get_sub_element_value :' +type(exception).__name__)
+			logger.warn(msg_local.get(('MSG_ERROR_GLX_EXCEPTION',config.language)).format('GamesList.__get_sub_element_value',type(exception).__name__))
+		return ''
+	
+	def __set_sub_element_value(self,nodegame,elementname,value,deleteEmptyTag=True):
+		"""write value of element"""
+		try:
+			if value=='':
+				nodegame.removeChild(nodegame.getElementsByTagName(elementname)[0])
+				
+				if not deleteEmptyTag and elementname in self.getGameXMLAttributeName_Default():
+					self.__add_subelement_node(nodegame,elementname,value)
+				
+			else:
+				nodegame.getElementsByTagName(elementname)[0].firstChild.nodeValue=value
+
+		except (AttributeError,IndexError):
+			if value !='':
+				self.__add_subelement_node(nodegame,elementname,value)
+			elif not deleteEmptyTag and elementname in self.getGameXMLAttributeName_Default():
+				self.__add_subelement_node(nodegame,elementname,value)
+			
+		except Exception as exception:
+			#logger.warn('__get_sub_element_value :' +type(exception).__name__)
+			logger.warn(msg_local.get(('MSG_ERROR_GLX_EXCEPTION',config.language)).format('GamesList.__set_sub_element_value',type(exception).__name__))
+		return ''
+
+	
+	def __add_subelement_node(self,node,subnodename,subnodevalue):
+		"""add subelement on a node"""
+		new_dom_node_subelement = self._gameListXmlDom.createElement(subnodename)
+		new_dom_node_subelement_text = self._gameListXmlDom.createTextNode( subnodevalue )
+		new_dom_node_subelement.appendChild(new_dom_node_subelement_text)
+		node.appendChild(new_dom_node_subelement)
+
+
+	def __search_node_by_path(self,node_type,search_path):
+		"""search node element by path and return objet """
+		tag_path = self._gameListXmlDom.getElementsByTagName("path")
+		for element in tag_path:
+			if element.firstChild.nodeValue == search_path:
+				if element.parentNode.nodeName == node_type:
+					if element.parentNode.nodeName == self._CLASS_GAME_NODENAME_EXPORT:
+						return self.__get_game_from_element(element.parentNode)
+					else:
+						raise MyError('Unknow node')
+				else:
+					raise MyError('Not Found1')
+		raise MyError('Not Found2')
+
+
+	def __search_nodes_by_attr(self,node_type,search_attr,search_value):
+		"""search nodes element by a value in specific attribut """
+		nodes_found =[]
+		
+		tag_elm = self._gameListXmlDom.getElementsByTagName(search_attr)
+		for element in tag_elm:
+			try:
+				tag_value = element.firstChild.nodeValue
+			except:
+				#cas des tags vide
+				tag_value = ''
+			
+			#0.7.5 Recherche non sensitive
+			if search_value.lower() in tag_value.lower() and tag_value != '':
+				if element.parentNode.nodeName == node_type:
+					if element.parentNode.nodeName == self._CLASS_GAME_NODENAME_EXPORT:
+						nodes_found.append(self.__get_game_from_element(element.parentNode))
+					elif element.parentNode.nodeName == self._CLASS_FOLDER_NODENAME:
+						nodes_found.append(self.__get_folder_from_element(element.parentNode))
+					else:
+						raise MyError('Unknow node')
+		return nodes_found
+
+				
+	#game functions----------------------------------------------------------------	
+	def __get_game_from_element(self,element):
+		"""convert dom element to pojo game"""
+		game = GameExport()
+		##Lecture des noeuds fils
+		game.path = self.__get_sub_element_value(element,"path")
+		game.name = self.__get_sub_element_value(element,"name")
+		game.plateform = self.__get_sub_element_value(element,"plateform")
+		game.playcount = self.__get_sub_element_value(element,"playcount")
+		game.lastplayed = self.__get_sub_element_value(element,"lastplayed")
+		game.hidden = self.__get_sub_element_value(element,"hidden")
+		game.favorite = self.__get_sub_element_value(element,"favorite")
+		game.hashtag = self.__get_sub_element_value(element,"hash")
+		return game
+
+	def search_game_by_path(self,search_path):
+		"""search game element by path and return objet """
+		try:
+			return self.__search_node_by_path(self._CLASS_GAME_NODENAME_EXPORT,search_path)
+		except:
+			#Cas de Windows sur des fichiers GAMELIST unix (test only)
+			return self.__search_node_by_path(self._CLASS_GAME_NODENAME_EXPORT,search_path.replace(os.sep,'/'))
+			
+	def search_games(self,search_attr,search_value):
+		"""return games which matches critera"""
+		return self.__search_nodes_by_attr(self._CLASS_GAME_NODENAME_EXPORT,search_attr,search_value)
+		
+	def get_games(self):
+		"""get alls game elements"""
+		return self.__get_nodes_by_type(self._CLASS_GAME_NODENAME_EXPORT)
+
+	def get_games_by_plateformPath(self,seach_plateform):
+		"""get alls game on a specific plateform"""
+		return self.__search_nodes_by_attr(self._CLASS_GAME_NODENAME_EXPORT,'plateformPath',seach_plateform)
+
+	def add_game(self,newgame):
+		"""add a game in dom"""
+		gamelist_element = self._gameListXmlDom.getElementsByTagName(self._CLASS_GAMELIST_NODENAME_EXPORT)
+		newdom_game_element = self._gameListXmlDom.createElement(self._CLASS_GAME_NODENAME_EXPORT)
+		
+		#SubElements	
+		self.__add_subelement_node(newdom_game_element,"path",newgame.path)
+		if newgame.plateform!='':
+			self.__add_subelement_node(newdom_game_element,"plateform",newgame.plateform)
+		if newgame.plateformPath!='':
+			self.__add_subelement_node(newdom_game_element,"plateformPath",newgame.plateformPath)
+		if newgame.name!='':
+			self.__add_subelement_node(newdom_game_element,"name",newgame.name)
+		if newgame.playcount!='':
+			self.__add_subelement_node(newdom_game_element,"playcount",str(newgame.playcount))
+		if newgame.lastplayed!='':
+			self.__add_subelement_node(newdom_game_element,"lastplayed",newgame.lastplayed)
+		if newgame.hidden!='':
+			self.__add_subelement_node(newdom_game_element,"hidden",newgame.hidden)
+		if newgame.favorite!='':
+			self.__add_subelement_node(newdom_game_element,"favorite",newgame.favorite)
+		if newgame.hashtag!='':
+			self.__add_subelement_node(newdom_game_element,"hash",newgame.hashtag)
+		
+		gamelist_element[0].appendChild(newdom_game_element)
+		self.__tag_update()
+
+			
+	def update_game(self,updgame,deleteEmptyTag=True):
+		"""update existing game node in dom"""
+		tagpath = self._gameListXmlDom.getElementsByTagName("path")
+		for element in tagpath:
+			if element.firstChild.nodeValue == updgame.path:
+				game_node = element.parentNode
+				#SubElements	
+				self.__set_sub_element_value(game_node,"path",updgame.path,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"plateformPath",updgame.plateformPath,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"name",updgame.name,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"plateform",updgame.plateform,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"playcount",updgame.playcount,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"lastplayed",updgame.lastplayed,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"hidden",updgame.hidden,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"favorite",updgame.favorite,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"hash",updgame.hashtag,deleteEmptyTag)
+				self.__tag_update()
+
+		
+	def delete_game(self,delgame):
+		"""delete existing folder in dom"""
+		tag_path = self._gameListXmlDom.getElementsByTagName("path")
+		for element in tag_path:
+			if element.firstChild.nodeValue == delgame.path:
+				gamelist_element = self._gameListXmlDom.getElementsByTagName(self._CLASS_GAMELIST_NODENAME_EXPORT)
+				if element.parentNode.nodeName == self._CLASS_GAME_NODENAME_EXPORT:
+					gamelist_element[0].removeChild(element.parentNode)
+					self.__tag_update()
