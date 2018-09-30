@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                                 - SORT XML -                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.07 06/09/2018-09/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.10 06/09/2018-28/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -65,7 +65,7 @@ def main():
 	if args.descending:
 		SortDescending=True
 	
-	if os.path.getsize(args.file)==0:
+	if not os.path.isfile(args.file):
 		print('file not existing')
 		sys.exit(1)
 	

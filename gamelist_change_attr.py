@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                          --- CHANGE ATTRIBUT -----                           #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.09 09/09/2018-20/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.10 09/09/2018-28/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -101,7 +101,7 @@ def main():
 	if args.attribute=='hash':
 		args.attribute='hashtag'
 	
-	if os.path.getsize(args.file)==0:
+	if not os.path.isfile(args.file):
 		print('File not existing !')
 		sys.exit(1)
 	

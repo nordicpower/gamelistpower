@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                           - DIFF  GAMELIST.XML -                             #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.09 20/09/2018-20/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.10 20/09/2018-28/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -52,11 +52,11 @@ def main():
 	#Lecture Configuration
 	config.load_from_file()
 	
-	if os.path.getsize(args.file_source)==0:
+	if not os.path.isfile(args.file_source):
 		print('source file not existing !')
 		sys.exit(1)
 	
-	if os.path.getsize(args.file_destination)==0:
+	if not os.path.isfile(args.file_destination):
 		print('destination file not existing !')
 		sys.exit(1)
 	

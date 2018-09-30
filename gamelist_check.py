@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                                - CHECK XML -                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.08 14/05/2017-12/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.10 14/05/2017-28/09/2018 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -56,7 +56,7 @@ def main():
 	#Lecture Configuration
 	config.load_from_file()
 	
-	if os.path.getsize(args.file)==0:
+	if not os.path.isfile(args.file):
 		print('file not existing !')
 		sys.exit(1)
 
