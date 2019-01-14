@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                          --- CHANGE ATTRIBUT -----                           #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.10 09/09/2018-28/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.11 09/09/2018-02/01/2019 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -22,6 +22,8 @@ from glplib import *
 ARG_MODE='mode'
 ARG_MODE_COPY_REGION_FROM_PATH='copy_region_from_path'
 ARG_MODE_COPY_EMPTY_REGION_FROM_PATH='copy_empty_region_from_path'
+ARG_MODE_COPY_DEV2PUBLISHER='copy_empty_publisher_from_developer'
+ARG_MODE_COPY_PUBLISHER2DEV='copy_empty_developer_from_publisher'
 ARG_MODE_UPPER='upper'
 ARG_MODE_UPPER_ALL='upper_all'
 ARG_MODE_REMOVE='remove'
@@ -36,21 +38,35 @@ ARG_ATTR='--attribute'
 dico_region = {}
 ##Plus récurrents
 dico_region["USA"]="USA"
+dico_region["U"]="USA"
+dico_region["E"]="EUROPE"
+dico_region["Eu"]="EUROPE"
 dico_region["Europe"]="EUROPE"
+dico_region["F"]="FRANCE"
+dico_region["Fr"]="FRANCE"
 dico_region["France"]="FRANCE"
+dico_region["J"]="JAPON"
 dico_region["Japan"]="JAPON"
 dico_region["World"]="WORLD"
+dico_region["USA,Europe"]="USA, EUROPE"
 dico_region["USA, Europe"]="USA, EUROPE"
 ##Moins récurrents
 dico_region["Australia"]="AUSTRALIE"
 dico_region["Brazil"]="BRESIL"
 dico_region["Japan,Europe"]="JAPON, EUROPE"
+dico_region["Japan, Europe"]="JAPON, EUROPE"
 dico_region["Japan,Korea"]="JAPON, COREE"
+dico_region["Japan, Korea"]="JAPON, COREE"
+dico_region["Japan, USA"]="JAPON, USA"
+dico_region["Japan,USA"]="JAPON, USA"
 dico_region["Korea"]="COREE"
 dico_region["Russie"]="RUSSIE"
 dico_region["Taiwan"]="TAIWAN"
 dico_region["USA, Australia"]="USA, AUSTRALIE"
+dico_region["USA,Australia"]="USA, AUSTRALIE"
 dico_region["USA, Korea"]="USA, COREE"
+dico_region["USA,Korea"]="USA, COREE"
+
 
 
 dico_upper = {}
@@ -61,7 +77,8 @@ def get_args():
 	parser = argparse.ArgumentParser(description='change attribut of gamelist.xml',epilog='(C) NORDIC POWER')
 	parser.add_argument(ARG_MODE,choices=[ARG_MODE_COPY_REGION_FROM_PATH,ARG_MODE_COPY_EMPTY_REGION_FROM_PATH,
 		ARG_MODE_UPPER,ARG_MODE_UPPER_ALL,ARG_MODE_REMOVE,ARG_MODE_REMOVE_PLAYINFO,ARG_MODE_ADD_EMPTY_TAG,
-		ARG_MODE_REMOVE_EMPTY_TAG], default=ARG_MODE_COPY_REGION_FROM_PATH, help='mode')
+		ARG_MODE_REMOVE_EMPTY_TAG,ARG_MODE_COPY_DEV2PUBLISHER,ARG_MODE_COPY_PUBLISHER2DEV], 
+		default=ARG_MODE_COPY_REGION_FROM_PATH, help='mode')
 	parser.add_argument(ARG_FILE)
 	parser.add_argument(ARG_OVERWRITE,action="store_true")
 	parser.add_argument(ARG_ATTR)
@@ -127,7 +144,21 @@ def main():
 						game.region=dico_region[cle]
 						gamesList.update_game(game)
 						bChanged=True
-		
+	
+	if args.mode in [ARG_MODE_COPY_PUBLISHER2DEV]:
+		for game in gamesList.get_games():
+			if (game.developer=="" and game.publisher!=""):
+				game.developer=game.publisher
+				gamesList.update_game(game)
+				bChanged=True
+	
+	if args.mode in [ARG_MODE_COPY_DEV2PUBLISHER]:
+		for game in gamesList.get_games():
+			if (game.publisher=="" and game.developer!=""):
+				game.publisher=game.developer
+				gamesList.update_game(game)
+				bChanged=True
+	
 	if args.mode in [ARG_MODE_UPPER]:
 		for game in gamesList.get_games():
 			game.__dict__[args.attribute]=upper_html(game.__dict__[args.attribute])
