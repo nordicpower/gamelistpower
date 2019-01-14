@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                           - DIFF  GAMELIST.XML -                             #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.10 20/09/2018-28/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.11 20/09/2018-11/01/2019 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -26,6 +26,7 @@ ARG_MODE_DIFF_TXT='diff_txt'
 ARG_FILE_SRC='file_source'
 ARG_FILE_DST='file_destination'
 ARG_VERBOSE='--verbose'
+ARG_NOTUSEID='--notuseid'
 
 #---------------------------------------------------------------------------------------------------
 def get_args():
@@ -34,6 +35,7 @@ def get_args():
 	parser.add_argument(ARG_FILE_SRC)
 	parser.add_argument(ARG_FILE_DST)
 	parser.add_argument(ARG_VERBOSE,action="store_true")
+	parser.add_argument(ARG_NOTUSEID,action="store_true")
 	return parser.parse_args()
 
 #---------------------------------------------------------------------------------------------------
@@ -84,6 +86,9 @@ def main():
 	print ("Search...")
 	#DIFF GAME--------------------------------------------------------------------
 	search_attrs=['hash','path','name']
+	if not args.notuseid:
+		search_attrs.append('id')
+		
 	nb_in_dest={}
 	for search_attr in search_attrs:
 		nb_in_dest[search_attr]=0
@@ -107,9 +112,13 @@ def main():
 					if game_src.__dict__['hashtag']!="":
 						games_dst = gamesList_dst.search_games(search_attr,game_src.__dict__['hashtag'])
 						bRomFound=len(games_dst)>0
-				elif search_attr=='name':
+				elif search_attr in ['name']:
 					games_dst = gamesList_dst.search_games(search_attr,game_src.__dict__[search_attr])
 					bRomFound=len(games_dst)>0
+				elif search_attr in ['id']:
+					if game_src.ref_id!="" and game_src.ref_id!="0":
+						games_dst = gamesList_dst.search_games('ref_id',game_src.__dict__['ref_id'])
+						bRomFound=len(games_dst)>0
 					
 				if bRomFound:
 					game_src.specific='FOUND'

@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.10 31/10/2016-26/10/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.11 31/10/2016-05/01/2019 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -784,7 +784,11 @@ class GamesList:
 	def search_games(self,search_attr,search_value):
 		"""return games which matches critera"""
 		#print (search_attr,search_value)
-		return self.__search_nodes_by_attr(self._CLASS_GAME_NODENAME,search_attr,search_value)
+	
+		if search_attr=='ref_id':		
+			return filter(lambda x: x.ref_id == search_value , self.__get_nodes_by_type(self._CLASS_GAME_NODENAME))
+		else:
+			return self.__search_nodes_by_attr(self._CLASS_GAME_NODENAME,search_attr,search_value)
 		
 			
 	def get_games(self):
@@ -1411,7 +1415,6 @@ class GamesListExport:
 					else:
 						raise MyError('Unknow node')
 		return nodes_found
-
 				
 	#game functions----------------------------------------------------------------	
 	def __get_game_from_element(self,element):
@@ -1438,6 +1441,7 @@ class GamesListExport:
 			
 	def search_games(self,search_attr,search_value):
 		"""return games which matches critera"""
+
 		return self.__search_nodes_by_attr(self._CLASS_GAME_NODENAME_EXPORT,search_attr,search_value)
 		
 	def get_games(self):
