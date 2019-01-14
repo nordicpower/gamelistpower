@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                                - CHECK XML -                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.10 14/05/2017-28/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.1 14/05/2017-14/01/2019  #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -78,13 +78,23 @@ def main():
 	gamesList = GamesList()
 	try:
 		gamesList.import_xml_file(args.file)
-		if args.mode==ARG_MODE_LOAD_ONLY:
-			print('file loading OK')
-			sys.exit(0)
 	except MyError:
 		#cas fichier gamelist.xml mal formé, on passe au dossier de roms suivant
 		print 'error while loading file !'
 		sys.exit(1)
+	
+	#List des games par attribut vide
+	if args.mode==ARG_MODE_LOAD_ONLY:
+		print('file loading OK')
+		
+		bGameFound=False
+		for game_src in gamesList.get_games():
+			if game_src.path=="":
+				print('game '+game_src.name+' without path !')
+				bGameFound=True
+		if bGameFound==False:
+			print('check games ok')
+		sys.exit(0)
 	
 	#List des games par attribut vide
 	if args.mode==ARG_MODE_EMPTY_ATTR:
