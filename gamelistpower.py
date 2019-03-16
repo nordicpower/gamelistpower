@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                            - VERSION CONSOLE -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.10 20/09/2016-26/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.12 20/09/2016-16/03/2019 #
 #------------------------------------------------------------------------------#
 #Création des entrées folder des nouveaux dossiers                             #
 #Suppression des entrées folder inexistantes dans les dossiers                 #
@@ -27,7 +27,7 @@ from threading import Thread
 from glplib import *
 	
 #CONSTANTS-----------------------------------------------------------------------
-VERSION='0.9.10 BETA 26/09/2018'
+VERSION='0.9.12 BETA 16/03/2019'
 SOURCE_NAME='NordicPower'
 SEUIL_AFFICHAGE_CHECKPICTURES=1
 SEUIL_SAUVEGARDE_BIGROM=50 #20
@@ -1182,7 +1182,7 @@ class GameListPatcher(Thread,ObjectWithEvents):
 				es_config_default_emulator=''
 				es_config_default_core=''
 				es_config_extension=[]
-				logger.debug(msg_local.get(('MSG_DEBUG_GLP_ESSYSTEM_UNKNOW_PLATEFORM',config.language)).format(config_ES.name))
+				logger.debug(msg_local.get(('MSG_DEBUG_GLP_ESSYSTEM_UNKNOW_PLATEFORM',config.language)).format(GameListDirectory))
 
 			if self._config.rootPathUsb !='' and es_config_command =='':
 				try:
@@ -1361,7 +1361,7 @@ def get_args():
 	#Version Happigc
 	#parser.add_argument(ARG_MODE,choices=[ARG_MODE_PATCH_FULL,ARG_MODE_PATCH_FORCE,ARG_MODE_CORRECT_ONLY,ARG_MODE_TOP_ONLY,ARG_MODE_STATS_ONLY,ARG_MODE_NOIMAGE_ONLY,ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY], default=ARG_MODE_PATCH_FULL, help=msg_local_arg.get(('MSG_ARG_MODE_HELP',config.language)))
 	#Version Recalbox
-	parser.add_argument(ARG_MODE,choices=[ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY], default=ARG_MODE_GENERATE_SH, help=msg_local_arg.get(('MSG_ARG_MODE_HELP',config.language)))
+	parser.add_argument(ARG_MODE,choices=[ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY,ARG_MODE_CORRECT_ONLY], default=ARG_MODE_GENERATE_SH, help=msg_local_arg.get(('MSG_ARG_MODE_HELP',config.language)))
 	parser.add_argument(ARG_LOG,choices=[ARG_LOG_DEBUG,ARG_LOG_INFO,ARG_LOG_ERROR], default=ARG_LOG_DEBUG, help=msg_local_arg.get(('MSG_ARG_LOG_HELP',config.language)))
 	return parser.parse_args()
 
