@@ -6,7 +6,7 @@
 #------------------------------------------------------------------------------#
 # Manipulation du fichier de regle pour le module GAMEGEN                      #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.05 28/05/2018-28/07/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.12 28/05/2018-16/03/2019 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -41,6 +41,7 @@ SOURCE_ATTR_GENRE     ='genre'
 SOURCE_ATTR_NAME      ='name'
 SOURCE_ATTR_DEVELOPER ='developer'
 SOURCE_ATTR_PUBLISHER ='publisher'
+SOURCE_ATTR_PLAYERS   ='players'
 
 TYPE_RULE_GENSH  = 'gensh'
 TYPE_RULE_ROMCPY = 'romcpy'
@@ -334,7 +335,7 @@ def load_rules_from_ini_config(config_rules):
 			elms_rule = config_rules[config_rule_key].split(',')
 			rule.exclusion_files=[]
 			rule.source=elms_rule[0]
-			if rule.source not in [SOURCE_ATTR_GENRE,SOURCE_ATTR_NAME,SOURCE_ATTR_DEVELOPER,SOURCE_ATTR_PUBLISHER,SOURCE_ATTR_PATH]:
+			if rule.source not in [SOURCE_ATTR_GENRE,SOURCE_ATTR_NAME,SOURCE_ATTR_DEVELOPER,SOURCE_ATTR_PUBLISHER,SOURCE_ATTR_PATH,SOURCE_ATTR_PLAYERS]:
 				logger.warn(msg_local.get(('MSG_WARN_RUL_SOURCE_NOT_SUPPORTED',config.language)).format(rule.source,rule.name))
 				next
 			rule.type=TYPE_RULE_ROMCPY
