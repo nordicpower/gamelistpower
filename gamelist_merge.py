@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                           - MERGE GAMELIST.XML -                             #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.07 21/08/2018-09/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.07 21/08/2018-19/09/2019 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -22,17 +22,21 @@ from glplib import *
 #CONSTANTS ARGUMENTS LANCEMENT---------------------------------------------------
 ARG_MODE='mode'
 ARG_MODE_MERGE_NAME_ONLY='merge_name'
-ARG_MODE_MERGE_DESC_ONLY='merge_desc'
+ARG_MODE_MERGE_ATTR_ONLY='merge_attr'
 ARG_MODE_MERGE_FULL='merge_full'
 ARG_FILE_SRC='file_source'
 ARG_FILE_DST='file_destination'
+ARG_METHOD='--method'
+ARG_ATTR='--attribute'
 
 #---------------------------------------------------------------------------------------------------
 def get_args():
 	parser = argparse.ArgumentParser(description='merge two files gamelist.xml',epilog='(C) NORDIC POWER')
-	parser.add_argument(ARG_MODE,choices=[ARG_MODE_MERGE_NAME_ONLY,ARG_MODE_MERGE_DESC_ONLY,ARG_MODE_MERGE_FULL], default=ARG_MODE_MERGE_NAME_ONLY, help='mode')
+	parser.add_argument(ARG_MODE,choices=[ARG_MODE_MERGE_NAME_ONLY,ARG_MODE_MERGE_ATTR_ONLY,ARG_MODE_MERGE_FULL], default=ARG_MODE_MERGE_NAME_ONLY, help='mode')
 	parser.add_argument(ARG_FILE_SRC)
 	parser.add_argument(ARG_FILE_DST)
+	parser.add_argument(ARG_METHOD)
+	parser.add_argument(ARG_ATTR)
 	return parser.parse_args()
 
 #---------------------------------------------------------------------------------------------------
@@ -59,6 +63,21 @@ def main():
 		print('destination file not existing !')
 		sys.exit(1)
 	
+	#arguments
+	if args.method!='':
+		if args.method not in ['path','name','id']:
+			print('method not supported !')
+			sys.exit(1)
+	else:
+		args.method='path'
+	
+	if args.mode in [ARG_MODE_MERGE_ATTR_ONLY] and args.attribute not in GamesList().getGameXMLAttributeName():
+		print('attribute '+args.attribute+' not supported !')
+		sys.exit(1)
+	if args.attribute=='hash':
+		args.attribute='hashtag'
+	if args.attribute=='':
+		args.attribute='name'
 	
 	gamesList_src = GamesList()
 	try:
@@ -85,8 +104,26 @@ def main():
 	for game_src in gamesList_src.get_games():
 		
 		try:
-			#Mise à jour metadata game	
-			game_dst = gamesList_dst.search_game_by_path(game_src.path)
+			#Recherche
+			if args.method=='path':
+				game_dst = gamesList_dst.search_game_by_path(game_src.path)
+			if args.method=='id':
+				if game_src.ref_id!="" and game_src.ref_id!="0":
+					game_dst_liste = gamesList_dst.search_games('ref_id',game_src.__dict__['ref_id'])
+					if len(game_dst_liste)>0:
+						game_dst = game_dst_liste[0]
+					else:
+						continue
+				else:
+					continue
+			if args.method=='name':
+				game_dst_liste = gamesList_dst.search_games('name',game_src.name)
+				if len(game_dst_liste)>0:
+					game_dst = game_dst_liste[0]
+				else:
+					continue
+			
+			#Mise à jour metadata game
 			if args.mode==ARG_MODE_MERGE_NAME_ONLY:
 				if game_dst.name != game_src.name:
 					print (game_src.name+' applied to ' + game_dst.name)
@@ -95,16 +132,24 @@ def main():
 				else:
 					print (game_src.name+' not changed')
 				
-			if args.mode==ARG_MODE_MERGE_DESC_ONLY:
-				if game_dst.desc != game_src.desc:
-					print (game_dst.name+' new description !')
-					game_dst.desc = game_src.desc
-					gamesList_dst.update_game(game_dst)
+			if args.mode==ARG_MODE_MERGE_ATTR_ONLY:
+				if args.attribute=='id':
+					if game_dst.__dict__['ref_id'] != game_src.__dict__['ref_id']:
+						print (game_dst.name+' new id !')
+						game_dst.__dict__['ref_id'] = game_src.__dict__['ref_id']
+						gamesList_dst.update_game(game_dst)
+					else:
+						print (game_dst.name+' id not changed')
 				else:
-					print (game_dst.name+' description not changed')
-			
+					if game_dst.__dict__[args.attribute] != game_src.__dict__[args.attribute]:
+						print (game_dst.name+' new '+args.attribute+' !')
+						game_dst.__dict__[args.attribute] = game_src.__dict__[args.attribute]
+						gamesList_dst.update_game(game_dst)
+					else:
+						print (game_dst.name+' '+args.attribute+' not changed')
+					
 			if args.mode==ARG_MODE_MERGE_FULL:
-				game_dst.path = game_src.path
+				#game_dst.path = game_src.path
 				if game_src.name!='':game_dst.name = game_src.name
 				if game_src.desc!='':game_dst.desc = game_src.desc
 				if game_src.image!='':game_dst.image = game_src.image		
