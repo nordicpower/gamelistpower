@@ -232,4 +232,12 @@
     <destinationName>NEBULUS</destinationName>
     <preserveFavorite>false</preserveFavorite>
   </rule>
+  <rule>
+    <name>players1</name>
+    <searchAttribute>players</searchAttribute>
+    <searchValue>1</searchValue>
+    <destination>/recalbox/share/roms/collections/players1</destination>
+    <destinationName>PLAYERS 1</destinationName>
+    <preserveFavorite>false</preserveFavorite>
+  </rule>
 </rules>

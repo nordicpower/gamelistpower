@@ -7,7 +7,7 @@
 # Generation d'un fichier gamelist "collection" selon criteres de recherche    #
 # dans les autres gamelist.xml                                                 #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.07 17/04/2017-06/09/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.13 28/05/2018-21/03/2019 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -156,7 +156,7 @@ def search_games_for_multi(GameListDirectory,gamesList,plateform,es_system_name,
 	
 	for rule in rules:
 			#recherche sur un attribut
-			if rule.source in [SOURCE_ATTR_GENRE,SOURCE_ATTR_NAME,SOURCE_ATTR_DEVELOPER,SOURCE_ATTR_PUBLISHER]:
+			if rule.source in [SOURCE_ATTR_GENRE,SOURCE_ATTR_NAME,SOURCE_ATTR_DEVELOPER,SOURCE_ATTR_PUBLISHER,SOURCE_ATTR_PLAYERS]:
 				for result_game in gamesList.search_games(rule.source,rule.search):
 					
 					rom_to_exclude=False

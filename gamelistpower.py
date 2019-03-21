@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                            - VERSION CONSOLE -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.12 20/09/2016-16/03/2019 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.13 20/09/2016-21/03/2019 #
 #------------------------------------------------------------------------------#
 #Création des entrées folder des nouveaux dossiers                             #
 #Suppression des entrées folder inexistantes dans les dossiers                 #
@@ -27,7 +27,7 @@ from threading import Thread
 from glplib import *
 	
 #CONSTANTS-----------------------------------------------------------------------
-VERSION='0.9.12 BETA 16/03/2019'
+VERSION='0.9.13 BETA 21/03/2019'
 SOURCE_NAME='NordicPower'
 SEUIL_AFFICHAGE_CHECKPICTURES=1
 SEUIL_SAUVEGARDE_BIGROM=50 #20
@@ -1126,7 +1126,6 @@ class GameListPatcher(Thread,ObjectWithEvents):
 			else:
 				logger.critical(msg_local.get(('MSG_CRITICAL_GLP_RULE_NOT_EXIST',config.language)).format('rules_romcpy.xml'))
 				sys.exit(1)
-		
 		
 		if self._mode in [ARG_MODE_GENERATE_SH,ARG_MODE_GENERATE_ROMCPY]:
 			#Cas particulier collection sans gamelist.xml cible 
