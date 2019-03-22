@@ -110,6 +110,7 @@ dico_genre["JEU D'ACTION PLATES-FORMES"]="PLATEFORME"
 dico_genre["PLATFORM GAME"]="PLATEFORME"
 dico_genre["PLATFORM ACTION GAME"]="PLATEFORME"
 dico_genre["PLATFORM VIDEO GAME"]="PLATEFORME"
+dico_genre[u"JEU VID\u00C9O DE PLATES-FORMES"]="PLATEFORME"
 
 dico_genre["JEU D'ACTION-SIMULATION"]="SIMULATION"
 dico_genre["JEU D'ACTION/SIMULATION"]="SIMULATION"
@@ -171,21 +172,25 @@ dico_genre[u"JEU DE SHOOT 'EM UP"]=u"SHOOT'EM UP"
 
 dico_genre[u"JEU DE CASSE-BRIQUE"]=u"CASSE-BRIQUES"
 dico_genre[u"JEU DE CASSE BRIQUE"]=u"CASSE-BRIQUES"
+dico_genre[u"JEU VID\u00C9O DE CASSE-BRIQUES"]=u"CASSE-BRIQUES"
+
+dico_genre[u"JEU DE MOTO"]=u"CONDUITE, MOTO"
 
 dico_genre[u"JEU VIDÉO DE BASEBALL"]=u"SPORT, BASEBALL"
+dico_genre[u"JEU DE BASE-BALL"]=u"SPORT, BASEBALL"
 dico_genre[u"JEU DE BASEBALL"]=u"SPORT, BASEBALL"
 dico_genre[u"BASKETBALL GAME"]=u"SPORT, BASKET"
 dico_genre[u"POOL SIMULATION"]=u"SPORT, BILLARD"
 dico_genre[u"BOWLING GAME"]=u"SPORT, BOWLING"
 dico_genre[u"BOXING GAME"]=u"SPORT, BOXE"
 dico_genre[u"PRO WRESTLING GAME"]=u"SPORT, CATCH"
+dico_genre[u"JEU DE CATCH"]=u"SPORT, CATCH"
 dico_genre[u"SOCCER GAME"]=u"SPORT, FOOTBALL"
 dico_genre[u"JEU DE FOOTBALL"]=u"SPORT, FOOTBALL"
 dico_genre[u"ICE HOCKEY GAME"]=u"SPORT, HOCKEY SUR GLACE"
 dico_genre[u"GOLF SIMULATOR"]=u"SPORT, GOLF"
 dico_genre[u"GOLF GAME"]=u"SPORT, GOLF"
 dico_genre[u"JEU DE GOLF"]=u"SPORT, GOLF"
-dico_genre[u"JEU DE MOTO"]=u"SPORT, MOTO"
 dico_genre[u"RUGBY GAME"]=u"SPORT, RUGBY"
 
 dico_genre[u"SHOOT'EM UP"]=u"SHOOT'EM UP"
@@ -286,16 +291,20 @@ def main():
 	if args.mode in [ARG_MODE_COPY_GENRE_FROM_DESC]:
 		for game in gamesList.get_games():
 			for cle in dico_genre.keys():
-				if cle.upper() in game.desc.upper():
-					if game.genre==dico_genre[cle]:
-						#si 1ière occurence trouvé et identique au genre, plus d'autres recherche à faire
-						break
-					else:
-						print('Update genre '+dico_genre[cle]+' to '+game.name)
-						game.genre=dico_genre[cle]
-						gamesList.update_game(game)
-						bChanged=True
-						break
+				try:
+					if cle.upper() in game.desc.upper():
+						if game.genre==dico_genre[cle]:
+							#si 1ière occurence trouvé et identique au genre, plus d'autres recherche à faire
+							break
+						else:
+							print('Update genre '+dico_genre[cle]+' to '+game.name)
+							game.genre=dico_genre[cle]
+							gamesList.update_game(game)
+							bChanged=True
+							break
+				except:
+					print('Exception sur '+cle.upper())
+					break
 	
 	if args.mode in [ARG_MODE_COPY_EMPTY_REGION_FROM_NAME]:
 		for game in gamesList.get_games():
