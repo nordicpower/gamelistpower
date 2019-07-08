@@ -3,6 +3,17 @@ EMULATIONSTATION GAMELISTPOWER
 # Change Log
 ***NORDIC POWER amiga15@outlook.fr***
 
+# [0.9.14] 2019-07-08
+###Gamelist.xml
+* Support de la balise <video> de recalbox 6.1
+###gamelist_merge
+* Test ok sur merge de la balise <video>
+###gamelist_check
+* Test ok sur list de la balise <video>
+
+# [0.9.08] - [0.9.13]
+* Voir les commits
+
 # [0.9.07] 2018-09-09
 ###gamelist_sort
 * creation du script gamelist_sort.py pour trier le contenu d'un fichier xml
