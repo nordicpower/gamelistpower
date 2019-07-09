@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                           - MERGE GAMELIST.XML -                             #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.14 21/08/2018-08/07/2019 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.14 21/08/2018-09/07/2019 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -168,7 +168,7 @@ def main():
 			
 		except MyError:
 			
-			if args.mode in[ARG_MODE_MERGE_DESC_ONLY,ARG_MODE_MERGE_NAME_ONLY]:
+			if args.mode in[ARG_MODE_MERGE_NAME_ONLY]:
 				print (game_src.name+' not found')
 			
 			if args.mode == ARG_MODE_MERGE_FULL:
@@ -189,7 +189,7 @@ def main():
 			folder_XML_dest.path = folder_XML_src.path
 			if args.mode in[ARG_MODE_MERGE_NAME_ONLY,ARG_MODE_MERGE_FULL]:
 				if folder_XML_src.name!='':folder_XML_dest.name = folder_XML_src.name
-			if args.mode in[ARG_MODE_MERGE_DESC_ONLY,ARG_MODE_MERGE_FULL]:
+			if args.mode in[ARG_MODE_MERGE_FULL]:
 				if folder_XML_src.desc!='':folder_XML_dest.desc = folder_XML_src.desc
 			if args.mode in[ARG_MODE_MERGE_FULL]:
 				if folder_XML_src.image!='':folder_XML_dest.image = folder_XML_src.image
