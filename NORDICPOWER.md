@@ -3,13 +3,16 @@ EMULATIONSTATION GAMELISTPOWER
 # Change Log
 ***NORDIC POWER amiga15@outlook.fr***
 
-# [0.9.14] 2019-07-08
+# [0.9.14] 2019-07-31
 ###Gamelist.xml
 * Support de la balise <video> de recalbox 6.1
+* Support de la balise <md5>
 ###gamelist_merge
 * Test ok sur merge de la balise <video>
 ###gamelist_check
 * Test ok sur list de la balise <video>
+###gamelist_change_attr
+* Suppression maj http: et https: lors de UPPER_ALL
 
 # [0.9.08] - [0.9.13]
 * Voir les commits

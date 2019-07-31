@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                               - MODULE TOOLS -                               #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.00 31/10/2016-21/05/2018 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.14 31/10/2016-10/07/2019 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -19,6 +19,7 @@ import codecs
 
 #CONSTANTS----------------------------------------------------------------------
 DEFAULT_EXTENSIONS_IMAGE=['jpg','JPG','png','PNG']
+DEFAULT_EXTENSIONS_VIDEO=['mp4','MP4']
 DEFAULT_PATH_INI='/home/pi/happi/script/maconfig'
 #MSG LOCALISATION---------------------------------------------------------------
 #config=Config()
@@ -233,6 +234,9 @@ class Config:
 		self._images_extension=[]
 		self._images_folder=[]
 		
+		self._videos_extension=[]
+		self._videos_folder=[]
+		
 		self._game_name_exclusion=[]
 		self._game_name_hidden=[]
 		self._game_extension_exclusion=[]
@@ -285,6 +289,10 @@ class Config:
 	def images_extension(self):return self._images_extension
 	@property
 	def images_folder(self):return self._images_folder
+	@property
+	def videos_extension(self):return self._videos_extension
+	@property
+	def videos_folder(self):return self._videos_folder
 		
 	@property
 	def game_name_exclusion(self):return self._game_name_exclusion
@@ -458,6 +466,7 @@ class Config:
 			logger.debug(u'Configuration - Dossier des ROMS = ' + self._rootpath)
 			logger.debug(u'Configuration - Dossier des ROMS USB = ' + self._rootpath_usb)
 			logger.debug(u'Configuration - Extension fichier des images = ' + ','.join(self._images_extension))
+			logger.debug(u'Configuration - Extension fichier des videos = ' + ','.join(self._videos_extension))
 			#logger.debug(u'Configuration - Exclusion dossier = ' + ','.join(self._folder_name_exclusion))
 			for dir in sorted(self._folder_name_exclusion):
 				logger.debug(u'Configuration - Exclusion dossier = ' + dir)
@@ -466,6 +475,7 @@ class Config:
 			logger.debug(u'Config - Read roms = ' + self._rootpath)
 			logger.debug(u'Config - Read roms from USB = ' + self._rootpath_usb)
 			logger.debug(u'Config - Image Extensions = ' + ','.join(self._images_extension))
+			logger.debug(u'Config - Video Extensions = ' + ','.join(self._videos_extension))
 			#logger.debug(u'Config - Folder Exclusion = ' + ','.join(self._folder_name_exclusion))
 			for dir in sorted(self._folder_name_exclusion):
 				logger.debug(u'Config - Folder Exclusion = ' + dir)
@@ -485,6 +495,8 @@ class Config:
 			logger.debug(u'Configuration - Jeux - Mode suppression des jeux = ' + self._game_delete_option)
 			logger.debug(u'Configuration - Images - Extension fichiers = ' + ','.join(self._images_extension))
 			logger.debug(u'Configuration - Images - Dossiers = ' + ','.join(self._images_folder))
+			logger.debug(u'Configuration - Videos - Extension fichiers = ' + ','.join(self._videos_extension))
+			logger.debug(u'Configuration - Videos - Dossiers = ' + ','.join(self._videos_folder))
 			logger.debug(u'Configuration - Dossier - Dossiers cach\u00E9s = ' + ','.join(self._folder_name_hidden))
 			logger.debug(u'Configuration - Dossier - Dossier multi-\u00E9mulateurs =' +self._folder_multi)
 			logger.debug(u'Configuration - Gamelist - Sauvegarde 1er ex\u00E9cution = ' + str(self._option_save_origin))
@@ -510,6 +522,8 @@ class Config:
 			logger.debug(u'Config - Game - Delete Mode = ' + self._game_delete_option)
 			logger.debug(u'Config - Picture - File Extension  = ' + ','.join(self._images_extension))
 			logger.debug(u'Config - Picture - Folder = ' + ','.join(self._images_folder))
+			logger.debug(u'Config - Video - File Extension  = ' + ','.join(self._videos_extension))
+			logger.debug(u'Config - Video - Folder = ' + ','.join(self._videos_folder))
 			logger.debug(u'Config - Folder - Name Hidden = ' + ','.join(self._folder_name_hidden))
 			logger.debug(u'Config - Folder - Folder multi-emulators =' +_folder_multi)
 			logger.debug(u'Config - Gamelist - SaveOrigin = ' + str(self._option_save_origin))
@@ -582,12 +596,27 @@ class Config:
 			except:
 				self._images_extension = DEFAULT_EXTENSIONS_IMAGE
 			
+			#Extensions des videos (ajout des majuscules en auto)
+			try:
+				opt_video_extension = self.__ConfigSectionMap('directories')['video_extension']
+				opt_video_extension = opt_video_extension + ',' + opt_video_extension.upper()
+				self._videos_extension = opt_video_extension.split(',')
+			except:
+				self._videos_extension = DEFAULT_EXTENSIONS_VIDEO
+			
 			#Folder des images (ajout des majuscules en auto)
 			try:
 				opt_image_folder = self.__ConfigSectionMap('directories')['image_folder']
 				self._images_folder = opt_image_folder.split(',')
 			except:
 				self._images_folder = 'images,downloaded_images'.split(',')
+			
+			#Folder des video (ajout des majuscules en auto)
+			try:
+				opt_video_folder = self.__ConfigSectionMap('directories')['video_folder']
+				self._videos_folder = opt_video_folder.split(',')
+			except:
+				self._videos_folder = 'video'.split(',')
 			
 			#Exclusion de folder
 			try:

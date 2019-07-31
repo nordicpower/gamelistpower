@@ -4,7 +4,7 @@
 #                     - EMULATIONSTATION GAMELIST PATCH -                      #
 #                          --- CHANGE ATTRIBUT -----                           #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.11 09/09/2018-13/03/2019 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.14 09/09/2018-28/07/2019 #
 #------------------------------------------------------------------------------#
 
 #IMPORT STD---------------------------------------------------------------------
@@ -62,6 +62,7 @@ dico_region["De"]="ALLEMAGNE"
 dico_region["Germany"]="ALLEMAGNE"
 dico_region["J"]="JAPON"
 dico_region["Japan"]="JAPON"
+dico_region["Japon"]="JAPON"
 dico_region["World"]="WORLD"
 dico_region["USA,Europe"]="USA, EUROPE"
 dico_region["USA, Europe"]="USA, EUROPE"
@@ -69,6 +70,7 @@ dico_region["USA, Europe"]="USA, EUROPE"
 dico_region["Australia"]="AUSTRALIE"
 dico_region["Europe, Australia"]="EUROPE, AUSTRALIE"
 dico_region["Brazil"]=u"BR\u00C9SIL"
+dico_region["Canada"]="CANADA"
 dico_region["China"]="CHINE"
 dico_region["Japan,Europe"]="JAPON, EUROPE"
 dico_region["Japan, Europe"]="JAPON, EUROPE"
@@ -219,9 +221,15 @@ def get_args():
 
 def upper_html(input_string):
 
+	if 'HTTPS:' in input_string or 'https:' in input_string :
+		return input_string.lower()
+	if 'HTTP:' in input_string or 'http:' in input_string :
+		return input_string.lower()
+		
 	input_string=input_string.upper()
-	
+		
 	for keyUpper in dico_upper.keys():
+			
 		input_string.replace(keyUpper,dico_upper[keyUpper])
 	
 	return input_string
