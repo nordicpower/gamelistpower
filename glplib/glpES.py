@@ -52,7 +52,7 @@ class ESSystem:
 		self._emulators=[]  #Recalbox
 		
 		if kwargs is not None:
-			#mise à jour paramètre(s) nommé(s)
+			#mise Ã  jour paramÃ¨tre(s) nommÃ©(s)
 			self.__dict__.update(kwargs)
 	
 	def __repr__(self):
@@ -140,7 +140,7 @@ class ESSystemEmulator:
 		self._cores=[]
 		
 		if kwargs is not None:
-			#mise à jour paramètre(s) nommé(s)
+			#mise Ã  jour paramÃ¨tre(s) nommÃ©(s)
 			self.__dict__.update(kwargs)
 	
 	def __repr__(self):
@@ -172,7 +172,7 @@ class ESSystemList:
 	def __init__(self,**kwargs):		
 		self._XmlDom = minidom.getDOMImplementation()
 		if kwargs is not None:
-			#mise à jour paramètre(s) nommé(s)
+			#mise Ã  jour paramÃ¨tre(s) nommÃ©(s)
 			self.__dict__.update(kwargs)
 	
 	
@@ -249,7 +249,7 @@ class ESSystemList:
 				else:
 					raise MyError('Not Found1')
 		
-		###recherche sur une plateforme désactivee
+		###recherche sur une plateforme dÃ©sactivee
 		tag_path = self._XmlDom.getElementsByTagName("path-desac")
 		for element in tag_path:
 			if element.firstChild.nodeValue == search_path:
@@ -279,7 +279,7 @@ class ESSystemList:
 				else:
 					raise MyError('Not Found1')
 					
-		###recherche sur une plateforme désactivee
+		###recherche sur une plateforme dÃ©sactivee
 		tag_path = self._XmlDom.getElementsByTagName("path-desac")
 		for element in tag_path:
 			if element.firstChild.nodeValue == search_path:
@@ -360,7 +360,7 @@ class ESSystemList:
 		return self.__get_nodes_by_type(self._CLASS_SYSTEM_NODENAME)		
 	
 	
-	#- mise à jour XML ---------------------------------------------------------------------------
+	#- mise Ã  jour XML ---------------------------------------------------------------------------
 	def add_system(self,addsys):
 		systemlist_element = self._XmlDom.getElementsByTagName(self._CLASS_SYSTEMLIST_NODENAME)
 		newdom_system_element = self._XmlDom.createElement(self._CLASS_SYSTEM_NODENAME)
@@ -401,8 +401,10 @@ class ESSystemList:
 					new_dom_emulator_element.appendChild(new_dom_cores_element)
 				new_dom_emulators_element.appendChild(new_dom_emulator_element)
 			newdom_system_element.appendChild(new_dom_emulators_element)
-		
-		#Ajout du noeud system à l'arbre existant
+		else:
+			new_dom_emulators_element = self._XmlDom.createElement(self._CLASS_EMULATORS_NODENAME)
+			newdom_system_element.appendChild(new_dom_emulators_element)
+		#Ajout du noeud system Ã  l'arbre existant
 		systemlist_element[0].appendChild(newdom_system_element)
 		
 	def update_system(self,updsys):
@@ -475,7 +477,7 @@ class ESSettings:
 		self._conf_dict = dict()
 		
 		if kwargs is not None:
-			#mise à jour paramètre(s) nommé(s)
+			#mise Ã  jour paramÃ¨tre(s) nommÃ©(s)
 			self.__dict__.update(kwargs)
 	
 	#property-------------------------	
