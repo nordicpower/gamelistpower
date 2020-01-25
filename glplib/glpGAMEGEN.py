@@ -185,6 +185,10 @@ def search_games_for_multi(GameListDirectory,gamesList,plateform,es_system_name,
 						result_game.path = result_game.path.replace('.'+os.sep,GameListDirectory+os.sep)
 						if result_game.image != default_game_picture and result_game.image !='':
 							result_game.image = result_game.image.replace('.'+os.sep,GameListDirectory+os.sep)
+						if result_game.video !='':
+							result_game.video = result_game.video.replace('.'+os.sep,GameListDirectory+os.sep)
+						if result_game.thumbnail !='':
+							result_game.thumbnail = result_game.thumbnail.replace('.'+os.sep,GameListDirectory+os.sep)
 						local_emulator = result_game.emulator
 						if local_emulator=='':
 							local_emulator = es_config_default_emulator
