@@ -449,7 +449,9 @@ class ESSystemList:
 							new_dom_emulator_element.appendChild(new_dom_cores_element)
 						new_dom_emulators_element.appendChild(new_dom_emulator_element)
 					systemp_node.appendChild(new_dom_emulators_element)
-
+				else:
+					new_dom_emulators_element = self._XmlDom.createElement(self._CLASS_EMULATORS_NODENAME)
+					systemp_node.appendChild(new_dom_emulators_element)
 				
 				
 	#- activation / desactivation ---------------------------------------------------------------------------
