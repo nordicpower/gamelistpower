@@ -4,7 +4,7 @@
 #                              - GAMELISTPOWER -                               #
 #                             - MODULE GAMELIST -                              #
 #------------------------------------------------------------------------------#
-# NORDIC POWER amiga15@outlook.fr                 0.9.14 31/10/2016-31/07/2019 #
+# NORDIC POWER amiga15@outlook.fr                 0.9.15 31/10/2016-23/04/2020 #
 ################################################################################
 
 #IMPORT STD---------------------------------------------------------------------
@@ -97,6 +97,7 @@ class Game:
 		self._hashtag="" 		#RecalBox 18.06.27
 		self._video=""      #RecalBox 6.1 (gamelistpower 0.9.14)
 		self._md5=""        #Arrm (gamelistpower 0.9.14)
+		self._marquee=""    #Arrm/BATOCERA (gamelistpower 0.9.15)
 		
 		if kwargs is not None:
 			#mise à jour paramètre(s) nommé(s)
@@ -175,6 +176,8 @@ class Game:
 	def video(self):return self._video
 	@property
 	def md5(self):return self._md5
+	@property
+	def marquee(self):return self._marquee
 		
 	#setter-------------------------	
 	@path.setter
@@ -239,7 +242,10 @@ class Game:
 	def video(self,v):self._video=v
 	@md5.setter
 	def md5(self,v):self._md5=v
-			
+	@marquee.setter
+	def marquee(self,v):self._marquee=v
+	
+		
 	def get_filename_rom(self):
 		"""Extraction du nom de fichiers dans un path"""
 		return self.path.replace('\\','/').split('/')[-1]
@@ -277,6 +283,7 @@ class Game:
 		self.hashtag = game_src.hashtag
 		self.video = game_src.video
 		self.md5 = game_src.md5
+		self.marquee = game_src.marquee
 		
 		#Id interne non transmis
 		self.internal_glp_id = time.strftime('%Y%m%dT%H%M%S',time.localtime())
@@ -339,6 +346,8 @@ class Game:
 			self.video = game_src.video
 		if game_src.md5!='':
 			self.md5 = game_src.md5
+		if game_src.marquee!='':
+			self.marquee = game_src.marquee
 			
 		#Id interne non transmis
 		self.internal_glp_id = time.strftime('%Y%m%dT%H%M%S',time.localtime())
@@ -447,7 +456,7 @@ class GamesList:
 	
 	
 	def getGameXMLAttributeName_Standard(self):
-		return ['path','name','desc','image','rating','releasedate','developer','publisher','genre','region','players','playcount','lastplayed','hidden','favorite','md5']
+		return ['path','name','desc','image','rating','releasedate','developer','publisher','genre','region','players','playcount','lastplayed','hidden','favorite','md5','marquee']
 	
 	def getGameXMLAttributeName_Recalbox(self):
 		return ['emulator','emulators','cores','core','ratio','romtype','thumbnail','hash','video']
@@ -459,7 +468,7 @@ class GamesList:
 		return ['name','desc','developer','publisher','genre','region','md5']
 	
 	def getGameXMLAttributeName_PathType(self):
-		return ['path','image','thumbnail','background','screenshot','logo','video']
+		return ['path','image','thumbnail','background','screenshot','logo','video','marquee']
 	
 	def getGameXMLAttributeName_DateType(self):
 		return ['releasedate','lastplayed']
@@ -787,6 +796,8 @@ class GamesList:
 		game.hashtag = self.__get_sub_element_value(element,"hash")
 		game.video = self.__get_sub_element_value(element,"video")
 		game.md5 = self.__get_sub_element_value(element,"md5")
+		game.marquee = self.__get_sub_element_value(element,"marquee")
+		
 		return game
 
 	
@@ -870,6 +881,8 @@ class GamesList:
 			self.__add_subelement_node(newdom_game_element,"desc",newgame.desc)
 		if newgame.image!='':
 			self.__add_subelement_node(newdom_game_element,"image",newgame.image)
+		if newgame.video!='':
+			self.__add_subelement_node(newdom_game_element,"video",newgame.video)
 		if newgame.rating!='':
 			self.__add_subelement_node(newdom_game_element,"rating",newgame.rating)
 		if newgame.releasedate!='':
@@ -912,10 +925,11 @@ class GamesList:
 			self.__add_subelement_node(newdom_game_element,"romtype",newgame.romtype)
 		if newgame.hashtag!='':
 			self.__add_subelement_node(newdom_game_element,"hash",newgame.hashtag)
-		if newgame.video!='':
-			self.__add_subelement_node(newdom_game_element,"video",newgame.video)
 		if newgame.md5!='':
 			self.__add_subelement_node(newdom_game_element,"md5",newgame.md5)
+		if newgame.marquee!='':
+			self.__add_subelement_node(newdom_game_element,"marquee",newgame.marquee)
+		
 		gamelist_element[0].appendChild(newdom_game_element)
 		self.__tag_update()
 
@@ -968,6 +982,8 @@ class GamesList:
 				self.__set_sub_element_value(game_node,"hash",updgame.hashtag,deleteEmptyTag)
 				self.__set_sub_element_value(game_node,"video",updgame.video,deleteEmptyTag)
 				self.__set_sub_element_value(game_node,"md5",updgame.md5,deleteEmptyTag)
+				self.__set_sub_element_value(game_node,"marquee",updgame.marquee,deleteEmptyTag)
+				
 				self.__tag_update()
 
 	
